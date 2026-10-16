@@ -1,0 +1,14 @@
+#ifndef ARQUIVO_PRODUTO_H
+#define ARQUIVO_PRODUTO_H
+
+/* estrutura interna do arquivo referente as produtos do e-commerce */
+typedef struct estrutura_PRODUTO{
+    int numeracao;
+    int product_id;
+    int elo;
+    int excluido;
+    char brand[20];
+    char category_code[50];
+}ESTRUTURA_PRODUTO;
+
+#endif
