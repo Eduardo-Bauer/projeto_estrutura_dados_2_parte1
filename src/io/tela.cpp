@@ -2,13 +2,6 @@
 #include "io/tela.h"
 #include "models/status.h"
 
-#define PADRAO    "\x1b[0m"
-#define NEGRITO   "\x1b[1m"
-#define BRANCO    "\x1b[37m"
-#define VERDE     "\x1b[32m"
-#define VERMELHO  "\x1b[31m"
-#define AZUL      "\x1b[34m"
-
 int mostrarMenuInicial(){
     int opcao = 0;
 

@@ -41,7 +41,7 @@ int main(){
 
         switch (opcao){
             case 1:
-                mostrarMensagem({2, "Iniciando a inserção dos dados iniciais."});
+                mostrarMensagem({2, "Iniciando a insercao dos dados iniciais."});
                 
                 inserirDadosIniciais();
 

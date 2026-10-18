@@ -19,9 +19,6 @@ void escreverProduto(FILE *arquivoProduto, const ESTRUTURA_PRODUTO *produto);
 /**
  * @brief              Converte o registro do buffer em um registro compativel com a estrutura dos produtos.
  * 
- * Se não puder criar o arquivo ou registro do produto, imprime uma mensagem de erro 
- * e encerra a execução do programa (exit code 1).
- * 
  * @param registro     Ponteiro para o local de um registro do buffer.
  * @param produto      Ponteiro para o local que será convertido o registro do buffer.
  * @param numeracao    Numero sequencial no arquivo de produtos.
@@ -31,14 +28,13 @@ void escreverProduto(FILE *arquivoProduto, const ESTRUTURA_PRODUTO *produto);
 void converterEstruturaProduto(const ESTRUTURA_DATASET *registro, ESTRUTURA_PRODUTO *produto, unsigned long numeracao);
 
 /**
- * @brief            Cria e grava o arquivo de produtos a partir do buffer em memória.
+ * @brief               Cria e grava o arquivo de produtos a partir do buffer em memória.
  * 
- * Se não puder criar o arquivo ou registro do produto, imprime uma mensagem de erro 
- * e encerra a execução do programa (exit code 1).
+ * Se não puder criar o arquivo ou registro do produto, retorna uma mensagem de erro {0, ""}.
  * 
- * @param buffer     Ponteiro para o array de estruturas (dados lidos do dataset).
+ * @param buffer        Ponteiro para o array de compras (dados lidos do dataset).
  * 
- * @return int       Retorna 1 se sucesso, 0 se falhou.
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
  */
 RESULTADO preencherArquivoProduto(const ESTRUTURA_DATASET *buffer);
 
@@ -55,9 +51,6 @@ void escreverCompra(FILE *arquivoCompra, const ESTRUTURA_COMPRA *compra);
 /**
  * @brief             Converte o registro do buffer em um registro compativel com a estrutura das compras.
  * 
- * Se não puder criar o arquivo ou registro do produto, imprime uma mensagem de erro 
- * e encerra a execução do programa (exit code 1).
- * 
  * @param registro    Ponteiro para o local de um registro do buffer.
  * @param compra      Ponteiro para o local que será convertido o registro do buffer.
  * @param numeracao   Numero sequencial no arquivo de produtos.
@@ -67,14 +60,13 @@ void escreverCompra(FILE *arquivoCompra, const ESTRUTURA_COMPRA *compra);
 void converterEstruturaCompra(const ESTRUTURA_DATASET *registro, ESTRUTURA_COMPRA *compra, unsigned long numeracao);
 
 /**
- * @brief            Cria e grava o arquivo de vendas a partir do buffer em memória.
+ * @brief               Cria e grava o arquivo de vendas a partir do buffer em memória.
  * 
- * Se não puder criar o arquivo ou registro do produto, imprime uma mensagem de erro 
- * e encerra a execução do programa (exit code 1).
+ * Se não puder criar o arquivo ou registro do produto, retorna uma mensagem de erro {0, ""}.
  * 
- * @param buffer     Ponteiro para o array de estruturas (dados lidos do dataset).
+ * @param buffer        Ponteiro para o array de compras (dados lidos do dataset).
  * 
- * @return int       Retorna 1 se sucesso, 0 se falhou.
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
  */
 RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer);
 

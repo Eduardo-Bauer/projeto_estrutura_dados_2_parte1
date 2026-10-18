@@ -6,12 +6,13 @@
 #include "models/status.h"
 
 /**
- * @brief Preenche um buffer com os dados do dataset.
+ * @brief               Preenche um buffer com os dados do dataset.
  * 
- * Se não puder abrir o arquivo ou criar o buffer, imprime uma mensagem de erro 
- * e encerra a execução do programa (exit code 1).
+ * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, ""}.
  * 
- * @return ESTRUTURA_DATASET*   Ponteiro válido para o buffer criado.
+ * @param bufferSaida   Ponteiro para um ponteiro para armazenar os registros do dataset.
+ * 
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
  */
 RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida);
 

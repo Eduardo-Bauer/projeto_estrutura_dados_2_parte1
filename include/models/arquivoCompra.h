@@ -1,7 +1,7 @@
 #ifndef ARQUIVO_COMPRA_H
 #define ARQUIVO_COMPRA_H
 
-/* estrutura interna do arquivo referente as compras realizadas no e-commerce */
+/* Estrutura interna do arquivo referente as compras realizadas no e-commerce. */
 typedef struct estrutura_compra{
     int numeracao;
     int product_id;

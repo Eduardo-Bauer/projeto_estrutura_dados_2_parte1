@@ -35,7 +35,7 @@ int consultarCompras(){
 }
 
 int main(){
-    printf("teste se só tem compras\n");
+    printf("teste se so tem compras\n");
 
     if(consultarCompras()){
         printf("tudo certo\n");
