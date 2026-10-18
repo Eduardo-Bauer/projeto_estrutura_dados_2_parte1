@@ -2,7 +2,7 @@
 #define ARQUIVO_PRODUTO_H
 
 /* estrutura interna do arquivo referente as produtos do e-commerce */
-typedef struct estrutura_PRODUTO{
+typedef struct estrutura_produto{
     int numeracao;
     int product_id;
     int elo;

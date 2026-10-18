@@ -1,8 +1,9 @@
 #ifndef LEITOR_H
 #define LEITOR_H
 
-#include "../models/dataset.h"
-#include "../models/arquivoCompra.h"
+#include "models/dataset.h"
+#include "models/arquivoCompra.h"
+#include "models/status.h"
 
 /**
  * @brief Preenche um buffer com os dados do dataset.
@@ -12,6 +13,6 @@
  * 
  * @return ESTRUTURA_DATASET*   Ponteiro válido para o buffer criado.
  */
-ESTRUTURA_DATASET* lerDataset();
+RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida);
 
 #endif

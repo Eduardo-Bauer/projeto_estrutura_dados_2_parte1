@@ -1,3 +1,5 @@
+# mingw32-make
+
 # Compilador e flags
 CXX      := g++
 CXXFLAGS := -Wall -Wextra -std=c++17 -Iinclude
@@ -14,6 +16,7 @@ TARGET := $(BIN_DIR)/programa.exe
 SRCS := $(SRC_DIR)/main.cpp \
         $(SRC_DIR)/io/leitor.cpp \
 		$(SRC_DIR)/io/escritor.cpp \
+		$(SRC_DIR)/io/tela.cpp \
         $(SRC_DIR)/utils/arquivo.cpp
 
 # Mapeia .cpp -> .o

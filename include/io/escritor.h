@@ -4,6 +4,7 @@
 #include "models/dataset.h"
 #include "models/arquivoCompra.h"
 #include "models/arquivoProduto.h"
+#include "models/status.h"
 
 /**
  * @brief                  Escreve os produtos encontrados dentro do arquivo.
@@ -39,7 +40,7 @@ void converterEstruturaProduto(const ESTRUTURA_DATASET *registro, ESTRUTURA_PROD
  * 
  * @return int       Retorna 1 se sucesso, 0 se falhou.
  */
-int preencherArquivoProduto(const ESTRUTURA_DATASET *buffer);
+RESULTADO preencherArquivoProduto(const ESTRUTURA_DATASET *buffer);
 
 /**
  * @brief                  Escreve as compras realizadas dentro do arquivo.
@@ -75,6 +76,6 @@ void converterEstruturaCompra(const ESTRUTURA_DATASET *registro, ESTRUTURA_COMPR
  * 
  * @return int       Retorna 1 se sucesso, 0 se falhou.
  */
-int preencherArquivoCompra(const ESTRUTURA_DATASET *buffer);
+RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer);
 
 #endif

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "io/escritor.h"
+#include "models/status.h"
 #include "models/arquivoCompra.h"
 #include "models/arquivoProduto.h"
 #include "models/dataset.h"
@@ -13,11 +14,6 @@ void escreverProduto(FILE *arquivoProduto, const ESTRUTURA_PRODUTO *produto){
 }
 
 void converterEstruturaProduto(const ESTRUTURA_DATASET *registro, ESTRUTURA_PRODUTO *produto, unsigned long numeracao){
-    if(produto == NULL || registro == NULL){
-        printf("Erro: registro para conversao vazio.\n");
-        exit(1);
-    }
-
     produto->numeracao = numeracao;
     produto->product_id = registro->product_id;
     
@@ -28,18 +24,21 @@ void converterEstruturaProduto(const ESTRUTURA_DATASET *registro, ESTRUTURA_PROD
     produto->category_code[sizeof(produto->category_code) - 1] = '\0';
 }
 
-int preencherArquivoProduto(const ESTRUTURA_DATASET *buffer){
+RESULTADO preencherArquivoProduto(const ESTRUTURA_DATASET *buffer){
     int ultimoProduto = 0;
 
     /* registro do dataset que sera convertido para uma estrutura menor */
     ESTRUTURA_PRODUTO *produto = (ESTRUTURA_PRODUTO*)malloc(sizeof(ESTRUTURA_PRODUTO));
     if(produto == NULL){
-        printf("Erro: Memoria insuficiente para o produto.\n");
-        return 0;
+        return {0, "Erro: Memoria insuficiente para o produto."};
     }
     
     /* ponteiro para o arquivo dos produtos do e-commerce */
     FILE *arquivoProduto = abrirArquivo(ARQUIVO_PRODUTO, "wb");
+    if(arquivoProduto == NULL){
+        free(produto);
+        return {0, "Erro: Falha ao abrir o arquivo dos produtos."};
+    }
 
     for(unsigned long i = 0, numeracao = 0; i < TAMANHO_BUFFER; i++){
         if(buffer[i].product_id > ultimoProduto){
@@ -51,9 +50,8 @@ int preencherArquivoProduto(const ESTRUTURA_DATASET *buffer){
 
     fclose(arquivoProduto);
     free(produto);
-    produto = NULL;
 
-    return 1;
+    return {1, "Sucesso ao preencher o arquivo dos produtos."};
 }
 
 
@@ -62,11 +60,6 @@ void escreverCompra(FILE *arquivoCompra, const ESTRUTURA_COMPRA *compra){
 }
 
 void converterEstruturaCompra(const ESTRUTURA_DATASET *registro, ESTRUTURA_COMPRA *compra, unsigned long numeracao) {
-    if (compra == NULL || registro == NULL) {
-        printf("Erro: registro para conversao vazio.\n");
-        exit(1);
-    }
-
     compra->numeracao = numeracao;
     compra->price = registro->price;
     compra->product_id = registro->product_id;
@@ -78,16 +71,19 @@ void converterEstruturaCompra(const ESTRUTURA_DATASET *registro, ESTRUTURA_COMPR
     compra->category_code[sizeof(compra->category_code) - 1] = '\0';
 }
 
-int preencherArquivoCompra(const ESTRUTURA_DATASET *buffer){
+RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer){
     /* registro do dataset que sera convertido para uma estrutura menor */
     ESTRUTURA_COMPRA *compra = (ESTRUTURA_COMPRA*)malloc(sizeof(ESTRUTURA_COMPRA));
     if(compra == NULL){
-        printf("Erro: Memoria insuficiente para o produto.\n");
-        return 0;
+        return {0, "Erro: Memoria insuficiente para a compra."};
     }
     
     /* ponteiro para o arquivo das compras realizadas no e-commerce */
     FILE *arquivoCompra = abrirArquivo(ARQUIVO_COMPRA, "wb");
+    if(arquivoCompra == NULL){
+        free(compra);
+        return {0, "Erro: Falha ao abrir o arquivo das compras."};
+    }
 
     for(unsigned long i = 0, numeracao = 0; i < TAMANHO_BUFFER; i++){
         if(strcmp(buffer[i].event_type, "purchase") == 0){
@@ -98,7 +94,6 @@ int preencherArquivoCompra(const ESTRUTURA_DATASET *buffer){
 
     fclose(arquivoCompra);
     free(compra);
-    compra = NULL;
 
-    return 1;
+    return {1, "Sucesso ao preencher o arquivo das compras."};
 }
