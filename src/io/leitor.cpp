@@ -85,3 +85,131 @@ RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida){
 
     return {1, "Sucesso ao carregar os produtos na memoria."};    
 }
+
+RESULTADO pesquisaBinariaProduto(ESTRUTURA_PRODUTO **saida, const int valor){
+    /* diferenca gerada entre o produto buscado e o registro analisado */
+    int diferenca;
+    /* faixa minima que e usado para calcular o deslocamento da pesquisa binaria */
+    int deslocamentoMinimo = 0;
+    /* faixa maxima que e usado para calcular o deslocamento da pesquisa binaria */
+    int deslocamentoMaximo = 0;
+    /* valor de deslocamento realizado no arquivo */
+    int deslocamento = -1;
+
+    ESTRUTURA_PRODUTO *registro = (ESTRUTURA_PRODUTO*)malloc(sizeof(ESTRUTURA_PRODUTO));
+    if(registro == NULL){
+        return {0, "Erro: Memoria insuficiente para o buffer."};
+    }
+
+    /* ponteiro para o arquivo de produtos */
+    FILE *arquivo = fopen(ARQUIVO_PRODUTO, "rb");
+    if(arquivo == NULL){
+        free(registro);
+        return {0, "Erro: Falha ao abrir o arquivo de compras."};
+    }
+
+    fseek(arquivo, 0, SEEK_END);
+
+    /* tamanho do arquivo de produtos */
+    long tamanho_arquivo = ftell(arquivo);
+
+    /* quantidade de registro dentro do arquivo de produtos */
+    int total_registros = tamanho_arquivo / sizeof(ESTRUTURA_PRODUTO);
+    
+    if (total_registros == 0) {
+        fclose(arquivo);
+        free(registro);
+        return {0, "Erro: Arquivo vazio."};
+    }
+
+    deslocamentoMaximo = total_registros - 1;
+
+    while(deslocamentoMinimo <= deslocamentoMaximo){
+        deslocamento = deslocamentoMinimo + (deslocamentoMaximo - deslocamentoMinimo) / 2;
+
+        fseek(arquivo, sizeof(ESTRUTURA_PRODUTO) * deslocamento, SEEK_SET);
+        fread(registro, sizeof(ESTRUTURA_PRODUTO), 1, arquivo);
+
+        diferenca = valor - registro->product_id;
+
+        if(diferenca < 0){
+            deslocamentoMaximo = deslocamento - 1;
+        }
+        else if(diferenca > 0){
+            deslocamentoMinimo = deslocamento + 1;
+        }
+        else {
+            *saida = registro;
+            fclose(arquivo);
+            return {1, "Arquivo encontrado."}; 
+        }
+    }
+
+    fclose(arquivo);
+    free(registro);
+    return {0, "Arquivo nao encontrado."};
+}
+
+RESULTADO pesquisaBinariaCompra(ESTRUTURA_COMPRA **saida, const int valor){
+    /* diferenca gerada entre o produto buscado e o registro analisado */
+    int diferenca;
+    /* faixa minima que e usado para calcular o deslocamento da pesquisa binaria */
+    int deslocamentoMinimo = 0;
+    /* faixa maxima que e usado para calcular o deslocamento da pesquisa binaria */
+    int deslocamentoMaximo = 0;
+    /* valor de deslocamento realizado no arquivo */
+    int deslocamento = -1;
+
+    ESTRUTURA_COMPRA *registro = (ESTRUTURA_COMPRA*)malloc(sizeof(ESTRUTURA_COMPRA));
+    if(registro == NULL){
+        return {0, "Erro: Memoria insuficiente para o buffer."};
+    }
+
+    /* ponteiro para o arquivo das compras */
+    FILE *arquivo = fopen(ARQUIVO_COMPRA, "rb");
+    if(arquivo == NULL){
+        free(registro);
+        return {0, "Erro: Falha ao abrir o arquivo de compras."};
+    }
+
+    fseek(arquivo, 0, SEEK_END);
+
+    /* tamanho do arquivo de compras */
+    long tamanho_arquivo = ftell(arquivo);
+
+    /* quantidade de registros dentro do arquivo de compras */
+    int total_registros = tamanho_arquivo / sizeof(ESTRUTURA_COMPRA);
+    
+    if (total_registros == 0) {
+        fclose(arquivo);
+        free(registro);
+        return {0, "Erro: Arquivo vazio."};
+    }
+
+    deslocamentoMaximo = total_registros - 1;
+
+    while(deslocamentoMinimo <= deslocamentoMaximo){
+        deslocamento = deslocamentoMinimo + (deslocamentoMaximo - deslocamentoMinimo) / 2;
+
+        fseek(arquivo, sizeof(ESTRUTURA_COMPRA) * deslocamento, SEEK_SET);
+        fread(registro, sizeof(ESTRUTURA_COMPRA), 1, arquivo);
+
+        diferenca = valor - registro->product_id;
+
+        if(diferenca < 0){
+            deslocamentoMaximo = deslocamento - 1;
+        }
+        else if(diferenca > 0){
+            deslocamentoMinimo = deslocamento + 1;
+        }
+        else {
+            *saida = registro;
+            fclose(arquivo);
+            return {1, "Arquivo encontrado."}; 
+        }
+    }
+
+    fclose(arquivo);
+    free(registro);
+    return {0, "Arquivo nao encontrado."};
+}

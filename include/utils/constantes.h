@@ -20,7 +20,7 @@
 #define TAMANHO_BUFFER 65000000UL
 
 /* Quantidade de registros que serao lidos. */
-#define QUANTIDADE_REGISTRO 1000UL
+#define QUANTIDADE_REGISTRO 1000
 
 /* Quantidade de registros dentro de um bloco do indice. */
 #define QUANTIDADE_REGISTRO_INDICE 10000UL

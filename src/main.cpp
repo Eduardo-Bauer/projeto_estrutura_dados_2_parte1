@@ -9,38 +9,6 @@
 #include "io/escritor.h"
 #include "io/tela.h"
 
-void mostrarDados(){
-    int opcao = mostrarMenuArquivo();
-
-    switch (opcao){
-        case 1: {
-            ESTRUTURA_COMPRA *bufferCompra = NULL;
-
-            mostrarMensagem(lerCompra(&bufferCompra));
-
-            mostrarDadosCompra(bufferCompra);
-
-            free(bufferCompra);
-            break;
-        }
-
-        case 2: {
-            ESTRUTURA_PRODUTO *bufferProduto = NULL;
-
-            mostrarMensagem(lerProduto(&bufferProduto));
-
-            mostrarDadosProduto(bufferProduto);
-
-            free(bufferProduto);
-            break;
-        }
-
-        default:
-            mostrarMensagem({0, "Opcao nao encontrada."});
-            break;
-    }
-}
-
 void inserirDadosIniciais(){
     mostrarMensagem({2, "Iniciando a insercao dos dados iniciais."});
 
@@ -67,6 +35,73 @@ void inserirDadosIniciais(){
     free(buffer);
 }
 
+void mostrarDados(){
+    int opcao = mostrarMenuArquivo();
+
+    switch (opcao){
+        case 1: {
+            ESTRUTURA_COMPRA *bufferCompra = NULL;
+
+            mostrarMensagem(lerCompra(&bufferCompra));
+
+            mostrarDadosCompra(bufferCompra, QUANTIDADE_REGISTRO);
+
+            free(bufferCompra);
+            break;
+        }
+
+        case 2: {
+            ESTRUTURA_PRODUTO *bufferProduto = NULL;
+
+            mostrarMensagem(lerProduto(&bufferProduto));
+
+            mostrarDadosProduto(bufferProduto, QUANTIDADE_REGISTRO);
+
+            free(bufferProduto);
+            break;
+        }
+
+        default:
+            mostrarMensagem({0, "Opcao nao encontrada."});
+            break;
+    }
+}
+
+void consultarDados(){
+    int opcao = mostrarMenuArquivo();
+    int produto = escolherProduto();
+
+    switch (opcao){
+        case 1: {
+            ESTRUTURA_COMPRA *bufferCompra = NULL;
+
+            mostrarMensagem(pesquisaBinariaCompra(&bufferCompra, produto));
+
+            mostrarDadosCompra(bufferCompra, 1);
+
+            free(bufferCompra);
+            break;
+        }
+
+        case 2: {
+            ESTRUTURA_PRODUTO *bufferProduto = NULL;
+
+            mostrarMensagem(pesquisaBinariaProduto(&bufferProduto, produto));
+
+            if(bufferProduto != NULL){
+                mostrarDadosProduto(bufferProduto, 1);
+            }
+
+            free(bufferProduto);
+            break;
+        }
+
+        default:
+            mostrarMensagem({0, "Opcao nao encontrada."});
+            break;
+    }
+}
+
 int main(){
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
@@ -86,7 +121,7 @@ int main(){
             }
 
             case 3:{
-
+                consultarDados();
                 break;
             }
 

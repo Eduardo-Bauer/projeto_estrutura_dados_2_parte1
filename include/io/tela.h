@@ -37,21 +37,29 @@ int mostrarMenuArquivo();
 void mostrarMensagem(RESULTADO mensagem);
 
 /**
- * @brief           Mostra os dados das compras registradas.
+ * @brief               Mostra os dados das compras registradas.
  * 
- * @param arquivo   Ponteiro para o buffer das compras.
+ * @param registro      Ponteiro para o buffer das compras.
+ * @param quantidade    quantidade de registros para mostrar.
  * 
- * @return void     Retorna nada.
+ * @return void         Retorna nada.
  */
-void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro);
+void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro, int const quantidade);
 
 /**
- * @brief           Mostra os dados dos produtos registradas.
+ * @brief               Mostra os dados dos produtos registradas.
  * 
- * @param arquivo   Ponteiro para o buffer dos produtos.
+ * @param arquivo       Ponteiro para o buffer dos produtos.
+ * @param quantidade    quantidade de registros para mostrar.
  * 
- * @return void     Retorna nada.
+ * @return void         Retorna nada.
  */
-void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro);
+void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro, int const quantidade);
 
+/**
+ * @brief       Pergunta o numero do produto que você quer usar.
+ * 
+ * @return int  Retorna o numero do produto.
+ */
+int escolherProduto();
 #endif

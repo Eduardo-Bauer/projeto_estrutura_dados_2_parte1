@@ -39,4 +39,27 @@ RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida);
  */
 RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida);
 
+/**
+ * @brief               Realiza a pesquisa binaria dentro do arquivo dos produtos para achar o registro solicitado.
+ * 
+ * Se não puder criar o buffer, abrir o arquivo e não ter nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * 
+ * @param bufferSaida   Ponteiro para um ponteiro para armazenar o registro de produto encontrado.
+ * @param valor         Numero do produto que será pesquisado.
+ * 
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ */
+RESULTADO pesquisaBinariaProduto(ESTRUTURA_PRODUTO **saida, const int valor);
+
+/**
+ * @brief               Realiza a pesquisa binaria dentro do arquivo das compras para achar o registro solicitado.
+ * 
+ * Se não puder criar o buffer, abrir o arquivo e não ter nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * 
+ * @param bufferSaida   Ponteiro para um ponteiro para armazenar o registro de compra encontrado.
+ * @param valor         Numero do produto que será pesquisado.
+ * 
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ */
+RESULTADO pesquisaBinariaCompra(ESTRUTURA_COMPRA **saida, const int valor);
 #endif

@@ -33,9 +33,10 @@ int mostrarMenuInicial(){
     printf(AZUL "║" PADRAO " [1] - Inserir os dados iniciais             "          AZUL "║\n"
            AZUL "║" PADRAO " [2] - Mostrar os dados parcial              "          AZUL "║\n"
            AZUL "║" PADRAO " [3] - Consultar dado por pesquisa binaria   "          AZUL "║\n"
-           AZUL "║" PADRAO " [4] - Consultar dados a partir de um índice "          AZUL "║\n"
-           AZUL "║" PADRAO " [5] - Inserir dados                         "          AZUL "║\n"
-           AZUL "║" PADRAO " [6] - Remover dados                         "          AZUL "║\n"
+           AZUL "║" PADRAO " [4] - Consultar dado por sequencia          "          AZUL "║\n"
+           AZUL "║" PADRAO " [5] - Consultar dados a partir de um índice "          AZUL "║\n"
+           AZUL "║" PADRAO " [6] - Inserir dados                         "          AZUL "║\n"
+           AZUL "║" PADRAO " [7] - Remover dados                         "          AZUL "║\n"
            AZUL "║" PADRAO " [0] - Fechar programa                       "          AZUL "║\n\n" PADRAO);
 
     printf(AZUL "Digite sua escolha: " PADRAO);
@@ -56,8 +57,8 @@ void mostrarMensagem(RESULTADO mensagem) {
     }
 }
 
-void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro){
-    for(unsigned int i = 0; i < QUANTIDADE_REGISTRO; i++){
+void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro, int const quantidade){
+    for(int i = 0; i < quantidade; i++){
         if(registro[i].product_id != 0){
             printf("numeracao: %d | "
                    "produto: %d | "
@@ -73,8 +74,8 @@ void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro){
     }
 }
 
-void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro){
-    for(unsigned int i = 0; i < QUANTIDADE_REGISTRO; i++){
+void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro, int const quantidade){
+    for(int i = 0; i < quantidade; i++){
         if(registro[i].product_id != 0){
             printf("numeracao: %d | "
                    "produto: %d | "
@@ -86,4 +87,14 @@ void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro){
             return;
         }
     }
+}
+
+int escolherProduto(){
+    int produto = 0;
+
+    printf("Digite o codigo do produto que sera procurado: ");
+
+    scanf("%d", &produto);
+
+    return produto;
 }
