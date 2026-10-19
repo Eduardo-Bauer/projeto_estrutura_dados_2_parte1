@@ -213,3 +213,11 @@ RESULTADO pesquisaBinariaCompra(ESTRUTURA_COMPRA **saida, const int valor){
     free(registro);
     return {0, "Arquivo nao encontrado."};
 }
+
+int escolherProduto(){
+    int produto = 0;
+
+    scanf("%d", &produto);
+
+    return produto;
+}

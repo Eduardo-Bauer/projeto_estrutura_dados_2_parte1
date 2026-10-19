@@ -56,10 +56,4 @@ void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro, int const quantidade);
  */
 void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro, int const quantidade);
 
-/**
- * @brief       Pergunta o numero do produto que você quer usar.
- * 
- * @return int  Retorna o numero do produto.
- */
-int escolherProduto();
 #endif

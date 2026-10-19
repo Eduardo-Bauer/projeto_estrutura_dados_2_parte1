@@ -69,6 +69,8 @@ void mostrarDados(){
 
 void consultarDados(){
     int opcao = mostrarMenuArquivo();
+
+    mostrarMensagem({2, "Digite o codigo do produto que sera procurado: "});
     int produto = escolherProduto();
 
     switch (opcao){

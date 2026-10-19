@@ -62,4 +62,11 @@ RESULTADO pesquisaBinariaProduto(ESTRUTURA_PRODUTO **saida, const int valor);
  * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
  */
 RESULTADO pesquisaBinariaCompra(ESTRUTURA_COMPRA **saida, const int valor);
+
+/**
+ * @brief       Pergunta o numero do produto que você quer usar.
+ * 
+ * @return int  Retorna o numero do produto.
+ */
+int escolherProduto();
 #endif

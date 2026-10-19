@@ -88,13 +88,3 @@ void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro, int const quantidade
         }
     }
 }
-
-int escolherProduto(){
-    int produto = 0;
-
-    printf("Digite o codigo do produto que sera procurado: ");
-
-    scanf("%d", &produto);
-
-    return produto;
-}
