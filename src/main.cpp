@@ -3,16 +3,47 @@
 #include <string.h>
 #include <windows.h>
 #include "utils/constantes.h"
+#include "utils/arquivo.h"
 #include "models/status.h"
 #include "io/leitor.h"
 #include "io/escritor.h"
 #include "io/tela.h"
 
-int mostrarDados(){
-    return 1;
+void mostrarDados(){
+    int opcao = mostrarMenuArquivo();
+
+    switch (opcao){
+        case 1: {
+            ESTRUTURA_COMPRA *bufferCompra = NULL;
+
+            mostrarMensagem(lerCompra(&bufferCompra));
+
+            mostrarDadosCompra(bufferCompra);
+
+            free(bufferCompra);
+            break;
+        }
+
+        case 2: {
+            ESTRUTURA_PRODUTO *bufferProduto = NULL;
+
+            mostrarMensagem(lerProduto(&bufferProduto));
+
+            mostrarDadosProduto(bufferProduto);
+
+            free(bufferProduto);
+            break;
+        }
+
+        default:
+            mostrarMensagem({0, "Opcao nao encontrada."});
+            break;
+    }
 }
 
-int inserirDadosIniciais(){
+void inserirDadosIniciais(){
+    mostrarMensagem({2, "Iniciando a insercao dos dados iniciais."});
+
     mostrarMensagem({2, "Criando buffer dos dados do dataset."});
 
     ESTRUTURA_DATASET *buffer = NULL;
@@ -28,8 +59,6 @@ int inserirDadosIniciais(){
     mostrarMensagem(preencherArquivoCompra(buffer));
 
     free(buffer);
-
-    return 1;
 }
 
 int main(){
@@ -40,36 +69,38 @@ int main(){
         int opcao = mostrarMenuInicial();
 
         switch (opcao){
-            case 1:
-                mostrarMensagem({2, "Iniciando a insercao dos dados iniciais."});
-                
+            case 1:{
                 inserirDadosIniciais();
-
                 break;
+            }
 
-            case 2:
+            case 2:{
                 mostrarDados();
                 break;
+            }
 
-            case 3:
-
-                break;
-
-            case 4:
+            case 3:{
 
                 break;
+            }
 
-            case 5:
-
-                break;
-
-            case 6:
+            case 4:{
 
                 break;
+            }
+
+            case 5:{
+
+                break;
+            }
+
+            case 6:{
+
+                break;
+            }
 
             case 0:
                 exit(0);
-                break;
         }
     }
 }

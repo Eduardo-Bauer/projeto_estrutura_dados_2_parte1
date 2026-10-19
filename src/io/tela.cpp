@@ -1,6 +1,27 @@
 #include <stdio.h>
+#include "utils/constantes.h"
 #include "io/tela.h"
 #include "models/status.h"
+#include "models/arquivoCompra.h"
+#include "models/arquivoProduto.h"
+
+
+int mostrarMenuArquivo(){
+    int opcao = 0;
+
+    printf(AZUL "╔═════════════════════════════════════════════╗\n");
+    printf(AZUL "║" PADRAO NEGRITO BRANCO "          arquivos para selecionar           " PADRAO AZUL "║\n");
+    printf(AZUL "╚═════════════════════════════════════════════╝\n" PADRAO);
+
+    printf(AZUL "║" NEGRITO " Escolha uma das opções abaixo:              " PADRAO  AZUL "║\n");
+    printf(AZUL "║" PADRAO " [1] - Mostrar arquivo as compras            "          AZUL "║\n"
+           AZUL "║" PADRAO " [2] - Mostrar arquivo dos produtos          "          AZUL "║\n" PADRAO);
+
+    printf(AZUL "Digite sua escolha: " PADRAO);
+    scanf("%d", &opcao);
+
+    return opcao;
+}
 
 int mostrarMenuInicial(){
     int opcao = 0;
@@ -33,5 +54,37 @@ void mostrarMensagem(RESULTADO mensagem) {
 
     } else {
         printf("%s\n", mensagem.mensagem);
+    }
+}
+
+void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro){
+    for(unsigned int i = 0; i < QUANTIDADE_REGISTRO; i++){
+        if(registro[i].product_id != 0){
+            printf("numeracao: %d | "
+                   "produto: %d | "
+                   "preco: %.2f | "
+                   "marca: %s\n", 
+                   registro[i].numeracao, 
+                   registro[i].product_id, 
+                   registro[i].price, 
+                   registro[i].brand);
+        }else{
+            return;
+        }
+    }
+}
+
+void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro){
+    for(unsigned int i = 0; i < QUANTIDADE_REGISTRO; i++){
+        if(registro[i].product_id != 0){
+            printf("numeracao: %d | "
+                   "produto: %d | "
+                   "marca: %s\n", 
+                    registro[i].numeracao, 
+                    registro[i].product_id,
+                    registro[i].brand);
+        }else{
+            return;
+        }
     }
 }

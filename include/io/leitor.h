@@ -3,6 +3,7 @@
 
 #include "models/dataset.h"
 #include "models/arquivoCompra.h"
+#include "models/arquivoProduto.h"
 #include "models/status.h"
 
 /**
@@ -15,5 +16,11 @@
  * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
  */
 RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida);
+
+
+RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida);
+
+
+RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida);
 
 #endif

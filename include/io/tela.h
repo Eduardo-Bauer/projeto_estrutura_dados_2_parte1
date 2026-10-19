@@ -10,6 +10,8 @@
 #define AZUL      "\x1b[34m"
 
 #include "models/status.h"
+#include "models/arquivoCompra.h"
+#include "models/arquivoProduto.h"
 
 /**
  * @brief       Mostra na tela o menu inicial.
@@ -19,6 +21,13 @@
 int mostrarMenuInicial();
 
 /**
+ * @brief       Mostra na tela o menu de escolha de arquivo.
+ * 
+ * @return int  Retorna a opção que o usuário escolheu no menu.
+ */
+int mostrarMenuArquivo();
+
+/**
  * @brief           Mostra a mensagem retornada pelas funções na tela.
  * 
  * @param mensagem  Mensagem recebida pelas funções {numero, "texto"}.
@@ -26,5 +35,23 @@ int mostrarMenuInicial();
  * @return void     Retorna nada.
  */
 void mostrarMensagem(RESULTADO mensagem);
+
+/**
+ * @brief           Mostra os dados das compras registradas.
+ * 
+ * @param arquivo   Ponteiro para o arquivo das compras.
+ * 
+ * @return void     Retorna nada.
+ */
+void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro);
+
+/**
+ * @brief           Mostra os dados dos produtos registradas.
+ * 
+ * @param arquivo   Ponteiro para o arquivo dos produtos.
+ * 
+ * @return void     Retorna nada.
+ */
+void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro);
 
 #endif

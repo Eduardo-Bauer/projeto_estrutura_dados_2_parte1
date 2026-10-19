@@ -16,4 +16,7 @@
 /* Tamanho para a criacao do buffer. */
 #define TAMANHO_BUFFER 65000000UL
 
+/* Quantidade de registros que serao lidos. */
+#define QUANTIDADE_REGISTRO 1000UL
+
 #endif
