@@ -5,7 +5,6 @@
 #include "models/arquivoCompra.h"
 #include "models/arquivoProduto.h"
 
-
 int mostrarMenuArquivo(){
     int opcao = 0;
 

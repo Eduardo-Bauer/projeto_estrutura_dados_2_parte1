@@ -39,7 +39,7 @@ void mostrarMensagem(RESULTADO mensagem);
 /**
  * @brief           Mostra os dados das compras registradas.
  * 
- * @param arquivo   Ponteiro para o arquivo das compras.
+ * @param arquivo   Ponteiro para o buffer das compras.
  * 
  * @return void     Retorna nada.
  */
@@ -48,7 +48,7 @@ void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro);
 /**
  * @brief           Mostra os dados dos produtos registradas.
  * 
- * @param arquivo   Ponteiro para o arquivo dos produtos.
+ * @param arquivo   Ponteiro para o buffer dos produtos.
  * 
  * @return void     Retorna nada.
  */

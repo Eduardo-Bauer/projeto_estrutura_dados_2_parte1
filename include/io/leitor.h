@@ -17,10 +17,26 @@
  */
 RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida);
 
-
+/**
+ * @brief               Preenche um buffer com a quantidade definida de registros das compras.
+ * 
+ * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * 
+ * @param bufferSaida   Ponteiro para um ponteiro para armazenar os registros de compras.
+ * 
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ */
 RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida);
 
-
+/**
+ * @brief               Preenche um buffer com a quantidade definida de registros daos produtos.
+ * 
+ * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * 
+ * @param bufferSaida   Ponteiro para um ponteiro para armazenar os registros de produtos.
+ * 
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ */
 RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida);
 
 #endif
