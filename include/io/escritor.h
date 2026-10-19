@@ -70,4 +70,21 @@ void converterEstruturaCompra(const ESTRUTURA_DATASET *registro, ESTRUTURA_COMPR
  */
 RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer);
 
+/**
+ * @brief               Cria e grava o arquivo de indice dos produtos.
+ * 
+ * Se não puder criar o arquivo, registro do produto ou abrir o arquivo dos produtos, retorna uma mensagem de erro {0, ""}.
+ * 
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ */
+RESULTADO escreverIndiceProduto();
+
+/**
+ * @brief               Cria e grava o arquivo de indice das compras.
+ * 
+ * Se não puder criar o arquivo, registro do produto ou abrir o arquivo dos produtos, retorna uma mensagem de erro {0, ""}.
+ * 
+ * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ */
+RESULTADO escreverIndiceCompra();
 #endif

@@ -53,8 +53,9 @@ OBJS_SEM_MAIN := $(filter-out $(BUILD_DIR)/main.o, $(OBJS))
 test: $(OBJS_SEM_MAIN)
 	@if not exist "$(BIN_DIR)" mkdir "$(BIN_DIR)"
 #	$(CXX) $(CXXFLAGS) $(TEST_DIR)/testeLeitor.cpp $(OBJS_SEM_MAIN) -o $(TEST_TARGET)
-	$(CXX) $(CXXFLAGS) $(TEST_DIR)/testeProduto.cpp $(OBJS_SEM_MAIN) -o $(TEST_TARGET)
-#	$(CXX) $(CXXFLAGS) $(TEST_DIR)/testeCompra.cpp $(OBJS_SEM_MAIN) -o $(TEST_TARGET)
+#	$(CXX) $(CXXFLAGS) $(TEST_DIR)/testeProduto.cpp $(OBJS_SEM_MAIN) -o $(TEST_TARGET)
+	$(CXX) $(CXXFLAGS) $(TEST_DIR)/testeCompra.cpp $(OBJS_SEM_MAIN) -o $(TEST_TARGET)
+#	$(CXX) $(CXXFLAGS) $(TEST_DIR)/testeIndice.cpp $(OBJS_SEM_MAIN) -o $(TEST_TARGET)
 	@echo Teste compilado com sucesso! Executando...
 	@$(TEST_TARGET)
 

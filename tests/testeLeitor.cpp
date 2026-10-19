@@ -18,7 +18,9 @@ int testarBuffer(ESTRUTURA_DATASET *buffer){
 
 int main(){
     printf("realizando a implementacao do buffer\n");
-    ESTRUTURA_DATASET *buffer = lerDataset();
+    ESTRUTURA_DATASET *buffer = NULL;
+    
+    lerDataset(&buffer);
 
     printf("testando buffer\n");
     printf("resultado: %d\n", testarBuffer(buffer));

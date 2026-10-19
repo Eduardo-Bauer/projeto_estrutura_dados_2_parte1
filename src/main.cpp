@@ -58,6 +58,12 @@ void inserirDadosIniciais(){
 
     mostrarMensagem(preencherArquivoCompra(buffer));
 
+    mostrarMensagem({2, "Gerando arquivo dos indices."});
+
+    mostrarMensagem(escreverIndiceProduto());
+
+    mostrarMensagem(escreverIndiceCompra());
+
     free(buffer);
 }
 

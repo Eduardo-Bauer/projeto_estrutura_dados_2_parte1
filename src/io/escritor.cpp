@@ -6,6 +6,7 @@
 #include "models/arquivoCompra.h"
 #include "models/arquivoProduto.h"
 #include "models/dataset.h"
+#include "models/indice.h"
 #include "utils/constantes.h"
 #include "utils/arquivo.h"
 
@@ -40,9 +41,9 @@ RESULTADO preencherArquivoProduto(const ESTRUTURA_DATASET *buffer){
         return {0, "Erro: Falha ao abrir o arquivo dos produtos."};
     }
 
-    for(unsigned long i = 0, numeracao = 0; i < TAMANHO_BUFFER; i++){
+    for(unsigned long i = 0, numeracao = 0; i < TAMANHO_BUFFER; i++, numeracao++){
         if(buffer[i].product_id > ultimoProduto){
-            converterEstruturaProduto(&buffer[i], produto, numeracao++);
+            converterEstruturaProduto(&buffer[i], produto, numeracao);
             escreverProduto(arquivoProduto, produto);
             ultimoProduto = buffer[i].product_id;
         }
@@ -96,4 +97,121 @@ RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer){
     free(compra);
 
     return {1, "Sucesso ao preencher o arquivo das compras."};
+}
+
+RESULTADO escreverIndiceProduto(){
+    /* deslocamento que sera realizado no arquivo dos produtos */
+    int deslocamento = 0;
+
+    /* ponteiro para o arquivo dos produtos */
+    FILE *arquivo = abrirArquivo(ARQUIVO_PRODUTO, "rb");
+    if(arquivo == NULL){
+        return {0, "Erro: Falha ao abrir o arquivo dos produtos."};
+    }
+
+    /* ponteiro para o arquivo do indice dos produtos */
+    FILE *arquivoIndice = abrirArquivo(ARQUIVO_INDICE_PRODUTO, "wb");
+    if(arquivoIndice == NULL){
+        fclose(arquivo);
+        return {0, "Erro: Falha ao abrir o arquivo de indice dos produtos."};
+    }
+
+    /* buffer de um produto */
+    ESTRUTURA_PRODUTO *registro = (ESTRUTURA_PRODUTO*)malloc(sizeof(ESTRUTURA_PRODUTO));
+    if(registro == NULL){
+        fclose(arquivo);
+        fclose(arquivoIndice);
+        return {0, "Erro: Memoria insuficiente para o produto."};
+    }
+
+    /* buffer de um indice */
+    INDICE_PRODUTO *indice = (INDICE_PRODUTO*)malloc(sizeof(INDICE_PRODUTO));
+    if(indice == NULL){
+        fclose(arquivo);
+        fclose(arquivoIndice);
+        free(registro);
+        return {0, "Erro: Memoria insuficiente para registro do indice."};
+    }
+
+    while(fread(registro, sizeof(ESTRUTURA_PRODUTO), 1, arquivo) != NULL){
+        indice->primeiro_numeracao = registro->numeracao;
+        indice->primeiro_produto_id = registro->product_id;
+
+        deslocamento += QUANTIDADE_REGISTRO_INDICE - 1;
+
+        fseek(arquivo, sizeof(ESTRUTURA_PRODUTO) * deslocamento, SEEK_SET);
+
+        fread(registro, sizeof(ESTRUTURA_PRODUTO), 1, arquivo);
+
+        indice->ultimo_numeracao = registro->numeracao;
+        indice->ultimo_produto_id = registro->product_id;
+
+        fwrite(indice, sizeof(INDICE_PRODUTO), 1, arquivoIndice);
+    }
+
+    free(indice);
+    free(registro);
+
+    fclose(arquivo);
+    fclose(arquivoIndice);
+
+    return {1, "Sucesso ao criar arquivo indice dos produtos."};
+}
+
+RESULTADO escreverIndiceCompra(){
+    /* deslocamento que sera realizado no arquivo das compras */
+    int deslocamento = 0;
+
+    /* ponteiro para o arquivo das compras */
+    FILE *arquivo = abrirArquivo(ARQUIVO_COMPRA, "rb");
+    if(arquivo == NULL){
+        return {0, "Erro: Falha ao abrir o arquivo das compras."};
+    }
+
+    /* ponteiro para o arquivo do indice das compras */
+    FILE *arquivoIndice = abrirArquivo(ARQUIVO_INDICE_COMPRA, "wb");
+    if(arquivoIndice == NULL){
+        fclose(arquivo);
+        return {0, "Erro: Falha ao abrir o arquivo de indice das compras."};
+    }
+
+    /* buffer de uma compra */
+    ESTRUTURA_COMPRA *registro = (ESTRUTURA_COMPRA*)malloc(sizeof(ESTRUTURA_COMPRA));
+    if(registro == NULL){
+        fclose(arquivo);
+        fclose(arquivoIndice);
+        return {0, "Erro: Memoria insuficiente para a compra."};
+    }
+
+    /* buffer de um indice */
+    INDICE_COMPRA *indice = (INDICE_COMPRA*)malloc(sizeof(INDICE_COMPRA));
+    if(indice == NULL){
+        fclose(arquivo);
+        fclose(arquivoIndice);
+        return {0, "Erro: Memoria insuficiente para registro do indice."};
+    }
+
+    while(fread(registro, sizeof(ESTRUTURA_COMPRA), 1, arquivo) != NULL){
+        indice->primeiro_numeracao = registro->numeracao;
+        indice->primeiro_produto_id = registro->product_id;
+
+        deslocamento += QUANTIDADE_REGISTRO_INDICE - 1;
+
+        fseek(arquivo, sizeof(ESTRUTURA_COMPRA) * deslocamento, SEEK_SET);
+
+        fread(registro, sizeof(ESTRUTURA_COMPRA), 1, arquivo);
+
+        indice->ultimo_numeracao = registro->numeracao;
+        indice->ultimo_produto_id = registro->product_id;
+
+        fwrite(indice, sizeof(INDICE_COMPRA), 1, arquivoIndice);
+    }
+
+    free(indice);
+    free(registro);
+
+    fclose(arquivo);
+    fclose(arquivoIndice);
+
+    return {1, "Sucesso ao criar arquivo indice das compras."};
 }

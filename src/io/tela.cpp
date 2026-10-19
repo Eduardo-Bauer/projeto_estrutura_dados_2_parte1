@@ -31,7 +31,7 @@ int mostrarMenuInicial(){
 
     printf(AZUL "║" NEGRITO " Escolha uma das opções abaixo:              " PADRAO  AZUL "║\n");
     printf(AZUL "║" PADRAO " [1] - Inserir os dados iniciais             "          AZUL "║\n"
-           AZUL "║" PADRAO " [2] - Mostrar os dados (parcial ou total)   "          AZUL "║\n"
+           AZUL "║" PADRAO " [2] - Mostrar os dados parcial              "          AZUL "║\n"
            AZUL "║" PADRAO " [3] - Consultar dado por pesquisa binaria   "          AZUL "║\n"
            AZUL "║" PADRAO " [4] - Consultar dados a partir de um índice "          AZUL "║\n"
            AZUL "║" PADRAO " [5] - Inserir dados                         "          AZUL "║\n"
