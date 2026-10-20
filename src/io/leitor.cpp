@@ -134,20 +134,28 @@ RESULTADO pesquisaBinariaProduto(ESTRUTURA_PRODUTO **saida, const int valor){
 
         if(diferenca < 0){
             deslocamentoMaximo = deslocamento - 1;
+            continue;
         }
-        else if(diferenca > 0){
+        
+        if(diferenca > 0){
             deslocamentoMinimo = deslocamento + 1;
+            continue;
         }
-        else {
-            *saida = registro;
+
+        if(registro->excluido){
+            free(registro);
             fclose(arquivo);
-            return {1, "Arquivo encontrado."}; 
+            return {0, "Registro encontrado, mas esta excluido\n"};
         }
+            
+        *saida = registro;
+        fclose(arquivo);
+        return {1, "Registro encontrado."}; 
     }
 
     fclose(arquivo);
     free(registro);
-    return {0, "Arquivo nao encontrado."};
+    return {0, "Registro nao encontrado."};
 }
 
 RESULTADO pesquisaBinariaCompra(ESTRUTURA_COMPRA **saida, const int valor){
@@ -198,20 +206,28 @@ RESULTADO pesquisaBinariaCompra(ESTRUTURA_COMPRA **saida, const int valor){
 
         if(diferenca < 0){
             deslocamentoMaximo = deslocamento - 1;
+            continue;
         }
-        else if(diferenca > 0){
+        
+        if(diferenca > 0){
             deslocamentoMinimo = deslocamento + 1;
+            continue;
         }
-        else {
-            *saida = registro;
+
+        if(registro->excluido){
+            free(registro);
             fclose(arquivo);
-            return {1, "Arquivo encontrado."}; 
+            return {0, "Registro encontrado, mas esta excluido\n"};
         }
+
+        *saida = registro;
+        fclose(arquivo);
+        return {1, "Registro encontrado."}; 
     }
 
     fclose(arquivo);
     free(registro);
-    return {0, "Arquivo nao encontrado."};
+    return {0, "Registro nao encontrado."};
 }
 
 int escolherProduto(){

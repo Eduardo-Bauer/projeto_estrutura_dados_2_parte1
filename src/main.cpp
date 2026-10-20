@@ -128,7 +128,7 @@ int main(){
             }
 
             case 4:{
-
+                // ver se vai dar tempo para emplementar
                 break;
             }
 
@@ -138,6 +138,11 @@ int main(){
             }
 
             case 6:{
+
+                break;
+            }
+
+            case 7:{
 
                 break;
             }
