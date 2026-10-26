@@ -11,14 +11,14 @@ void testarIndiceProduto(){
         return;
     }
 
-    INDICE_PRODUTO *indice = (INDICE_PRODUTO*)malloc(sizeof(INDICE_PRODUTO));
+    INDICE_COMPRA *indice = (INDICE_COMPRA*)malloc(sizeof(INDICE_COMPRA));
     if(indice == NULL){
         fclose(arquivo);
         printf("nao foi possivel criar o indice\n");
         return;
     }
 
-    if(!fread(indice, sizeof(INDICE_PRODUTO), 1, arquivo)){
+    if(!fread(indice, sizeof(INDICE_COMPRA), 1, arquivo)){
         printf("nao leu nada\n");
         return;
     }

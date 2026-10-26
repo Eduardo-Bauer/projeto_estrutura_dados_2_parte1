@@ -40,28 +40,50 @@ RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida);
 RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida);
 
 /**
- * @brief               Realiza a pesquisa binaria dentro do arquivo dos produtos para achar o registro solicitado.
+ * @brief               Realiza a pesquisa binaria generica dentro de um arquivo de dados.
  * 
- * Se não puder criar o buffer, abrir o arquivo e não ter nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * @param nomeArquivo   Caminho do arquivo binario.
+ * @param valor         Valor (ID ou sequencial) que sera pesquisado.
+ * @param desInicial    Indice inicial da busca no arquivo.
+ * @param desFinal      Indice final da busca no arquivo (-1 para calcular o fim automaticamente).
+ * @param obterChave    Lambda ou funcao que extrai o campo a ser comparado do registro.
+ * @param saida         Ponteiro para ponteiro onde sera armazenado o registro encontrado.
  * 
- * @param bufferSaida   Ponteiro para um ponteiro para armazenar o registro de produto encontrado.
- * @param valor         Numero do produto que será pesquisado.
- * 
- * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
-RESULTADO pesquisaBinariaProduto(ESTRUTURA_PRODUTO **saida, const int valor);
+template <typename T>
+RESULTADO pesquisaBinaria(
+    const char *nomeArquivo,
+    int valor,
+    int desInicial,
+    int desFinal,
+    int (*obterChave)(const T*),
+    T **saida
+);
 
 /**
- * @brief               Realiza a pesquisa binaria dentro do arquivo das compras para achar o registro solicitado.
+ * @brief                   Realiza a pesquisa pelo arquivo de indice parcial (por ID ou sequencial).
  * 
- * Se não puder criar o buffer, abrir o arquivo e não ter nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * @param nomeArquivoDados  Caminho do arquivo de dados (produtos ou compras).
+ * @param nomeArquivoIndice Caminho do arquivo de indice.
+ * @param valor             Valor (ID ou sequencial) que sera pesquisado.
+ * @param obterMinBloco     Lambda que retorna o limite inicial do bloco de indice.
+ * @param obterMaxBloco     Lambda que retorna o limite final do bloco de indice.
+ * @param obterChaveDados   Lambda que retorna o campo do registro no arquivo de dados.
+ * @param saida             Ponteiro para ponteiro onde sera armazenado o registro encontrado.
  * 
- * @param bufferSaida   Ponteiro para um ponteiro para armazenar o registro de compra encontrado.
- * @param valor         Numero do produto que será pesquisado.
- * 
- * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ * @return RESULTADO        Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
-RESULTADO pesquisaBinariaCompra(ESTRUTURA_COMPRA **saida, const int valor);
+template <typename T, typename IndiceT>
+RESULTADO pesquisaIndice(
+    const char *nomeArquivoDados,
+    const char *nomeArquivoIndice,
+    int valor,
+    int (*obterMinBloco)(const IndiceT*),
+    int (*obterMaxBloco)(const IndiceT*),
+    int (*obterChaveDados)(const T*),
+    T **saida
+);
 
 /**
  * @brief       Pergunta o numero do produto que você quer usar.

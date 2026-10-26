@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "utils/constantes.h"
 #include "io/tela.h"
 #include "models/status.h"
 #include "models/arquivoCompra.h"
@@ -26,7 +25,7 @@ int mostrarMenuInicial(){
     int opcao = 0;
 
     printf(AZUL "╔═════════════════════════════════════════════╗\n");
-    printf(AZUL "║" PADRAO NEGRITO BRANCO "   arquivos de dados com índices parciais    " PADRAO AZUL "║\n");
+    printf(AZUL "║" PADRAO NEGRITO BRANCO "   arquivos de dados com indices parciais    " PADRAO AZUL "║\n");
     printf(AZUL "╚═════════════════════════════════════════════╝\n" PADRAO);
 
     printf(AZUL "║" NEGRITO " Escolha uma das opções abaixo:              " PADRAO  AZUL "║\n");
@@ -34,9 +33,10 @@ int mostrarMenuInicial(){
            AZUL "║" PADRAO " [2] - Mostrar os dados parcial              "          AZUL "║\n"
            AZUL "║" PADRAO " [3] - Consultar dado por pesquisa binaria   "          AZUL "║\n"
            AZUL "║" PADRAO " [4] - Consultar dado por sequencia          "          AZUL "║\n"
-           AZUL "║" PADRAO " [5] - Consultar dados a partir de um índice "          AZUL "║\n"
-           AZUL "║" PADRAO " [6] - Inserir dados                         "          AZUL "║\n"
-           AZUL "║" PADRAO " [7] - Remover dados                         "          AZUL "║\n"
+           AZUL "║" PADRAO " [5] - Consultar dados a partir do indice    "          AZUL "║\n"
+           AZUL "║" PADRAO " [6] - Consultar dado por sequencia          "          AZUL "║\n"
+           AZUL "║" PADRAO " [7] - Inserir dados                         "          AZUL "║\n"
+           AZUL "║" PADRAO " [8] - Remover dados                         "          AZUL "║\n"
            AZUL "║" PADRAO " [0] - Fechar programa                       "          AZUL "║\n\n" PADRAO);
 
     printf(AZUL "Digite sua escolha: " PADRAO);
