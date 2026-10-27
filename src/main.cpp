@@ -34,6 +34,13 @@ void inserirDadosIniciais(){
     mostrarMensagem(escreverIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(ARQUIVO_COMPRA, ARQUIVO_INDICE_COMPRA));
 
     free(buffer);
+
+    /* Limpa os arquivos temporarios ao recriar a base inicial */
+    FILE *tempProd = abrirArquivo(ARQUIVO_TEMP_PRODUTO, "wb");
+    if(tempProd != NULL) fclose(tempProd);
+
+    FILE *tempComp = abrirArquivo(ARQUIVO_TEMP_COMPRA, "wb");
+    if(tempComp != NULL) fclose(tempComp);
 }
 
 void mostrarDados(){
@@ -62,9 +69,9 @@ void mostrarDados(){
             break;
         }
 
-        default:
+        default:{
             mostrarMensagem({0, "Opcao nao encontrada."});
-            break;
+        }
     }
 }
 
@@ -81,7 +88,7 @@ void consultarDadosId(){
             /* Lambda que extrai o codigo do produto da compra*/
             auto extrairId = [](const ESTRUTURA_COMPRA *r) {return r->product_id;};
 
-            mostrarMensagem(pesquisaBinaria<ESTRUTURA_COMPRA>(ARQUIVO_COMPRA, produto, 0, -1, extrairId, &bufferCompra));
+            mostrarMensagem(pesquisaBinaria<ESTRUTURA_COMPRA>(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, produto, 0, -1, extrairId, &bufferCompra));
 
             if(bufferCompra != NULL){
                 mostrarDadosCompra(bufferCompra, 1);
@@ -97,7 +104,7 @@ void consultarDadosId(){
             /* Lambda que extrai o codigo do produto */
             auto extrairId = [](const ESTRUTURA_PRODUTO *r) {return r->product_id;};
 
-            mostrarMensagem(pesquisaBinaria<ESTRUTURA_PRODUTO>(ARQUIVO_PRODUTO, produto, 0, -1, extrairId, &bufferProduto));
+            mostrarMensagem(pesquisaBinaria<ESTRUTURA_PRODUTO>(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, produto, 0, -1, extrairId, &bufferProduto));
 
             if(bufferProduto != NULL){
                 mostrarDadosProduto(bufferProduto, 1);
@@ -107,9 +114,9 @@ void consultarDadosId(){
             break;
         }
 
-        default:
+        default:{
             mostrarMensagem({0, "Opcao nao encontrada."});
-            break;
+        }
     }
 }
 
@@ -128,7 +135,7 @@ void consultarDadosSequencial(){
                 return r->numeracao; 
             };
 
-            mostrarMensagem(pesquisaBinaria<ESTRUTURA_COMPRA>(ARQUIVO_COMPRA, numero, 0, -1, extrairSeqCompra, &bufferCompra));
+            mostrarMensagem(pesquisaBinaria<ESTRUTURA_COMPRA>(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, numero, 0, -1, extrairSeqCompra, &bufferCompra));
 
             if(bufferCompra != NULL){
                 mostrarDadosCompra(bufferCompra, 1);
@@ -146,7 +153,7 @@ void consultarDadosSequencial(){
                 return r->numeracao; 
             };
 
-            mostrarMensagem(pesquisaBinaria<ESTRUTURA_PRODUTO>(ARQUIVO_PRODUTO, numero, 0, -1, extrairSeqProduto, &bufferProduto));
+            mostrarMensagem(pesquisaBinaria<ESTRUTURA_PRODUTO>(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, numero, 0, -1, extrairSeqProduto, &bufferProduto));
 
             if(bufferProduto != NULL){
                 mostrarDadosProduto(bufferProduto, 1);
@@ -156,9 +163,9 @@ void consultarDadosSequencial(){
             break;
         }
 
-        default:
+        default:{
             mostrarMensagem({0, "Opcao nao encontrada."});
-            break;
+        }
     }    
 }
 
@@ -180,6 +187,7 @@ void consultarDadosIndiceId(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(
                 ARQUIVO_COMPRA,
                 ARQUIVO_INDICE_COMPRA,
+                ARQUIVO_TEMP_COMPRA,
                 produto,
                 minBlocoId,
                 maxBlocoId,
@@ -206,6 +214,7 @@ void consultarDadosIndiceId(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(
                 ARQUIVO_PRODUTO,
                 ARQUIVO_INDICE_PRODUTO,
+                ARQUIVO_TEMP_PRODUTO,
                 produto,
                 minBlocoId,
                 maxBlocoId,
@@ -221,9 +230,9 @@ void consultarDadosIndiceId(){
             break;
         }
 
-        default:
+        default:{
             mostrarMensagem({0, "Opcao nao encontrada."});
-            break;
+        }
     }
 }
 
@@ -245,6 +254,7 @@ void consultarDadosIndiceSequencial(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(
                 ARQUIVO_COMPRA,
                 ARQUIVO_INDICE_COMPRA,
+                ARQUIVO_TEMP_COMPRA,
                 numero,
                 minBlocoId,
                 maxBlocoId,
@@ -271,6 +281,7 @@ void consultarDadosIndiceSequencial(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(
                 ARQUIVO_PRODUTO,
                 ARQUIVO_INDICE_PRODUTO,
+                ARQUIVO_TEMP_PRODUTO,
                 numero,
                 minBlocoId,
                 maxBlocoId,
@@ -286,10 +297,59 @@ void consultarDadosIndiceSequencial(){
             break;
         }
 
+        default:{
+            mostrarMensagem({0, "Opcao nao encontrada."});
+        }
+    }    
+}
+
+void inserirRegistro(){
+int opcao = mostrarMenuArquivo();
+
+    switch (opcao){
+        case 1: {
+            ESTRUTURA_COMPRA novaCompra = {};
+
+            printf("Digite o ID do produto (product_id): ");
+            scanf("%d", &novaCompra.product_id);
+
+            printf("Digite o preco: ");
+            scanf("%f", &novaCompra.price);
+
+            printf("Digite a marca (brand): ");
+            scanf("%19s", novaCompra.brand);
+
+            printf("Digite a categoria (category_code): ");
+            scanf("%49s", novaCompra.category_code);
+
+            mostrarMensagem(inserirRegistro<ESTRUTURA_COMPRA>(
+                ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, novaCompra
+            ));
+            break;
+        }
+
+        case 2: {
+            ESTRUTURA_PRODUTO novoProduto = {};
+
+            printf("Digite o ID do produto (product_id): ");
+            scanf("%d", &novoProduto.product_id);
+
+            printf("Digite a marca (brand): ");
+            scanf("%19s", novoProduto.brand);
+
+            printf("Digite a categoria (category_code): ");
+            scanf("%49s", novoProduto.category_code);
+
+            mostrarMensagem(inserirRegistro<ESTRUTURA_PRODUTO>(
+                ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, novoProduto
+            ));
+            break;
+        }
+
         default:
             mostrarMensagem({0, "Opcao nao encontrada."});
             break;
-    }    
+    }
 }
 
 void excluirRegistroId(){
@@ -310,6 +370,7 @@ void excluirRegistroId(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(
                 ARQUIVO_COMPRA,
                 ARQUIVO_INDICE_COMPRA,
+                ARQUIVO_TEMP_COMPRA,
                 produto,
                 minBlocoId,
                 maxBlocoId,
@@ -337,6 +398,7 @@ void excluirRegistroId(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(
                 ARQUIVO_PRODUTO,
                 ARQUIVO_INDICE_PRODUTO,
+                ARQUIVO_TEMP_PRODUTO,
                 produto,
                 minBlocoId,
                 maxBlocoId,
@@ -353,9 +415,9 @@ void excluirRegistroId(){
             break;
         }
 
-        default:
+        default:{
             mostrarMensagem({0, "Opcao nao encontrada."});
-            break;
+        }
     }    
 }
 
@@ -377,6 +439,7 @@ void excluirRegistroSequencial(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(
                 ARQUIVO_COMPRA,
                 ARQUIVO_INDICE_COMPRA,
+                ARQUIVO_TEMP_COMPRA,
                 numero,
                 minBlocoId,
                 maxBlocoId,
@@ -404,6 +467,7 @@ void excluirRegistroSequencial(){
             mostrarMensagem(pesquisaIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(
                 ARQUIVO_PRODUTO,
                 ARQUIVO_INDICE_PRODUTO,
+                ARQUIVO_TEMP_PRODUTO,
                 numero,
                 minBlocoId,
                 maxBlocoId,
@@ -420,9 +484,9 @@ void excluirRegistroSequencial(){
             break;
         }
 
-        default:
+        default:{
             mostrarMensagem({0, "Opcao nao encontrada."});
-            break;
+        }
     }    
 }
 
@@ -465,7 +529,7 @@ int main(){
             }
 
             case 7:{
-                
+                inserirRegistro();
                 break;
             }
 
@@ -483,8 +547,9 @@ int main(){
                 exit(0);
             }
 
-            default:
+            default:{
                 mostrarMensagem({0, "Opcao nao encontrada."});
+            }
         }
     }
 }

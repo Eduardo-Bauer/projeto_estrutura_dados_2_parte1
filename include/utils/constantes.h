@@ -17,10 +17,10 @@
 #define ARQUIVO_INDICE_COMPRA "src/data/indiceCompra.bin"
 
 /* Nome do arquivo dos produtos recem adicionados. */
-#define ARQUIVO_TEMP_PRODUTO "data/temp/produtos_temp.bin"
+#define ARQUIVO_TEMP_PRODUTO "src/data/temp/produtos_temp.bin"
 
 /* Nome do arquivo das compras recem adicionados. */
-#define ARQUIVO_TEMP_COMPRA  "data/temp/compras_temp.bin"
+#define ARQUIVO_TEMP_COMPRA  "src/data/temp/compras_temp.bin"
 
 /* Tamanho para a criacao do buffer. */
 #define TAMANHO_BUFFER 65000000UL

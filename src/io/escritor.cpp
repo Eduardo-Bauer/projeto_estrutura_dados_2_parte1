@@ -126,6 +126,7 @@ RESULTADO excluirRegistro(const char *nomeArquivo, T *registro){
 
 /* Instanciacao explicita para permitir a chamada direto no main.cpp */
 template RESULTADO excluirRegistro<ESTRUTURA_PRODUTO>(const char*, ESTRUTURA_PRODUTO*);
+
 template RESULTADO excluirRegistro<ESTRUTURA_COMPRA>(const char*, ESTRUTURA_COMPRA*);
 
 template <typename T, typename IndiceT>
@@ -195,5 +196,116 @@ RESULTADO escreverIndice(const char *nomeArquivoDados, const char *nomeArquivoIn
 
 /* Instanciacao explicita para permitir a chamada direto no main.cpp */
 template RESULTADO escreverIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(const char*, const char*);
-
 template RESULTADO escreverIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(const char*, const char*);
+
+template <typename T>
+RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoTemp, T novoRegistro){
+    FILE *arqDados = abrirArquivo(nomeArquivoDados, "rb+");
+    if(arqDados == NULL){
+        return {0, "Erro: Falha ao abrir o arquivo de dados principal."};
+    }
+
+    /* Tenta abrir com rb+ para manter os registros existentes; se nao existir, cria com wb+ */
+    FILE *arqTemp = abrirArquivo(nomeArquivoTemp, "rb+");
+    if(arqTemp == NULL){
+        arqTemp = abrirArquivo(nomeArquivoTemp, "wb+");
+        if(arqTemp == NULL){
+            fclose(arqDados);
+            return {0, "Erro: Falha ao criar o arquivo temporario (verifique se a pasta data/temp existe)."};
+        }
+    }
+
+    fseek(arqDados, 0, SEEK_END);
+    int totalDados = (int)(ftell(arqDados) / sizeof(T));
+
+    if(totalDados == 0){
+        fclose(arqDados);
+        fclose(arqTemp);
+        return {0, "Erro: Arquivo principal vazio."};
+    }
+
+    /* 1. Descobre a posicao onde o novo registro sera gravado no arquivo temporario */
+    fseek(arqTemp, 0, SEEK_END);
+    int novaPosicaoTemp = (int)(ftell(arqTemp) / sizeof(T));
+
+    /* A numeracao continua a sequencia do arquivo principal para funcionar na busca sequencial */
+    novoRegistro.numeracao = totalDados + novaPosicaoTemp;
+    novoRegistro.excluido = 0;
+    novoRegistro.elo = -1;
+
+    /* 2. Busca binaria no arquivo principal para achar o registro antecessor (maior product_id <= novo) */
+    int min = 0;
+    int max = totalDados - 1;
+    int posAntecessor = 0; /* Se o novo ID for menor que todos, vincula na posicao 0 */
+    T itemAux;
+
+    while(min <= max){
+        int meio = min + (max - min) / 2;
+        fseek(arqDados, sizeof(T) * meio, SEEK_SET);
+        fread(&itemAux, sizeof(T), 1, arqDados);
+
+        if(itemAux.product_id <= novoRegistro.product_id){
+            posAntecessor = meio;
+            min = meio + 1;
+        } else {
+            max = meio - 1;
+        }
+    }
+
+    /* Carrega o registro antecessor do arquivo principal */
+    T itemPrincipal;
+    fseek(arqDados, sizeof(T) * posAntecessor, SEEK_SET);
+    fread(&itemPrincipal, sizeof(T), 1, arqDados);
+
+    /* 3. Encadeia mantendo a ordem crescente de product_id */
+    if(itemPrincipal.elo == -1){
+        itemPrincipal.elo = novaPosicaoTemp;
+        fseek(arqDados, sizeof(T) * posAntecessor, SEEK_SET);
+        fwrite(&itemPrincipal, sizeof(T), 1, arqDados);
+    } else {
+        int eloAtual = itemPrincipal.elo;
+        int eloAnterior = -1;
+        T itemTempAtual;
+
+        while(eloAtual != -1){
+            fseek(arqTemp, sizeof(T) * eloAtual, SEEK_SET);
+            if(fread(&itemTempAtual, sizeof(T), 1, arqTemp) != 1){
+                break;
+            }
+
+            if(novoRegistro.product_id < itemTempAtual.product_id){
+                break;
+            }
+
+            eloAnterior = eloAtual;
+            eloAtual = itemTempAtual.elo;
+        }
+
+        novoRegistro.elo = eloAtual;
+
+        if(eloAnterior == -1){
+            itemPrincipal.elo = novaPosicaoTemp;
+            fseek(arqDados, sizeof(T) * posAntecessor, SEEK_SET);
+            fwrite(&itemPrincipal, sizeof(T), 1, arqDados);
+        } else {
+            fseek(arqTemp, sizeof(T) * eloAnterior, SEEK_SET);
+            fread(&itemTempAtual, sizeof(T), 1, arqTemp);
+            itemTempAtual.elo = novaPosicaoTemp;
+            fseek(arqTemp, sizeof(T) * eloAnterior, SEEK_SET);
+            fwrite(&itemTempAtual, sizeof(T), 1, arqTemp);
+        }
+    }
+
+    /* 4. Grava o novo registro no final do arquivo temporario */
+    fseek(arqTemp, sizeof(T) * novaPosicaoTemp, SEEK_SET);
+    fwrite(&novoRegistro, sizeof(T), 1, arqTemp);
+
+    fclose(arqDados);
+    fclose(arqTemp);
+
+    return {1, "Registro inserido no arquivo temporario e vinculado por elo com sucesso."};
+}
+
+/* Instanciacao explicita no final do escritor.cpp */
+template RESULTADO inserirRegistro<ESTRUTURA_PRODUTO>(const char*, const char*, ESTRUTURA_PRODUTO);
+template RESULTADO inserirRegistro<ESTRUTURA_COMPRA>(const char*, const char*, ESTRUTURA_COMPRA);

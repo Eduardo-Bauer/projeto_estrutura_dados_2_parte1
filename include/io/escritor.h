@@ -92,4 +92,10 @@ RESULTADO escreverIndice(const char *nomeArquivoDados, const char *nomeArquivoIn
 template <typename T>
 RESULTADO excluirRegistro(const char *nomeArquivo, T *registro);
 
+/**
+ * @brief Insere um novo registro no arquivo temporario (data/temp) e atualiza o elo ordenado por product_id.
+ */
+template <typename T>
+RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoTemp, T novoRegistro);
+
 #endif

@@ -54,6 +54,7 @@ RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida);
 template <typename T>
 RESULTADO pesquisaBinaria(
     const char *nomeArquivo,
+    const char *nomeArquivoTemp,
     int valor,
     int desInicial,
     int desFinal,
@@ -78,6 +79,7 @@ template <typename T, typename IndiceT>
 RESULTADO pesquisaIndice(
     const char *nomeArquivoDados,
     const char *nomeArquivoIndice,
+    const char *nomeArquivoTemp,
     int valor,
     int (*obterMinBloco)(const IndiceT*),
     int (*obterMaxBloco)(const IndiceT*),
