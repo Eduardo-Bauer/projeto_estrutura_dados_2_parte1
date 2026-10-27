@@ -36,6 +36,8 @@ RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida){
 }
 
 RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida){
+    int i = 0;
+    
     /* malloc na memoria para os dados das compras */
     ESTRUTURA_COMPRA *buffer = (ESTRUTURA_COMPRA*)calloc(QUANTIDADE_REGISTRO, sizeof(ESTRUTURA_COMPRA));
     if(buffer == NULL){
@@ -49,10 +51,17 @@ RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida){
         return {0, "Erro: Falha ao abrir o arquivo de compras."};
     }
 
-    if(!fread(buffer, sizeof(ESTRUTURA_COMPRA), QUANTIDADE_REGISTRO, arquivo)){
-        free(buffer);
-        return {0, "Erro: Nao foi lido nenhum registro do arquivo de compras."};
-    };
+    while(i < QUANTIDADE_REGISTRO){
+        if(fread(&buffer[i], sizeof(ESTRUTURA_COMPRA), 1, arquivo) == 0){
+            break;
+        }
+
+        if(buffer[i].excluido == 1){
+            i--;
+        }
+        
+        i++;
+    }
 
     fclose(arquivo);
 
@@ -62,6 +71,8 @@ RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida){
 }
 
 RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida){
+    int i = 0;
+    
     /* malloc na memoria para os dados dos produtos */
     ESTRUTURA_PRODUTO *buffer = (ESTRUTURA_PRODUTO*)calloc(QUANTIDADE_REGISTRO, sizeof(ESTRUTURA_PRODUTO));
     if(buffer == NULL){
@@ -72,13 +83,20 @@ RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida){
     FILE *arquivo = abrirArquivo(ARQUIVO_PRODUTO, "rb");
     if(arquivo == NULL){
         free(buffer);
-        return {0, "Erro: Falha ao abrir o arquivo de compras."};
+        return {0, "Erro: Falha ao abrir o arquivo de produtos."};
     }
 
-    if(!fread(buffer, sizeof(ESTRUTURA_PRODUTO), QUANTIDADE_REGISTRO, arquivo)){
-        free(buffer);
-        return {0, "Erro: Nao foi lido nenhum registro do arquivo de compras."};
-    };
+    while(i < QUANTIDADE_REGISTRO){
+        if(fread(&buffer[i], sizeof(ESTRUTURA_PRODUTO), 1, arquivo) == 0){
+            break;
+        }
+
+        if(buffer[i].excluido == 1){
+            i--;
+        }
+        
+        i++;
+    }
 
     fclose(arquivo);
 
@@ -146,7 +164,7 @@ RESULTADO pesquisaBinaria(const char *nomeArquivo, int valor, int desInicial, in
 
         if(registro->excluido){
             free(registro);
-            return {0, "Registro encontrado, mas esta excluido\n"};
+            return {0, "Registro encontrado, mas esta excluido."};
         }
 
         *saida = registro;

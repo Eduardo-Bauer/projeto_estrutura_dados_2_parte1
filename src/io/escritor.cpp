@@ -102,6 +102,32 @@ RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer){
     return {1, "Sucesso ao preencher o arquivo das compras."};
 }
 
+template <typename T>
+RESULTADO excluirRegistro(const char *nomeArquivo, T *registro){
+    if(registro == NULL){
+        return {0, "Erro: Registro nulo."};
+    }
+
+    FILE *arquivo = abrirArquivo(nomeArquivo, "rb+");
+    if(arquivo == NULL){
+        return {0, "Erro: Falha ao abrir o arquivo."};
+    }
+
+    fseek(arquivo, sizeof(T) * registro->numeracao, SEEK_SET);
+
+    registro->excluido = 1;
+
+    fwrite(registro, sizeof(T), 1, arquivo);
+
+    fclose(arquivo);
+
+    return {1, "Registro excluido com sucesso."};
+}
+
+/* Instanciacao explicita para permitir a chamada direto no main.cpp */
+template RESULTADO excluirRegistro<ESTRUTURA_PRODUTO>(const char*, ESTRUTURA_PRODUTO*);
+template RESULTADO excluirRegistro<ESTRUTURA_COMPRA>(const char*, ESTRUTURA_COMPRA*);
+
 template <typename T, typename IndiceT>
 RESULTADO escreverIndice(const char *nomeArquivoDados, const char *nomeArquivoIndice){
     /* ponteiro para o arquivo de dados */

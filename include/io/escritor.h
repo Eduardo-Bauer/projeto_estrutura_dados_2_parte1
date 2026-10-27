@@ -30,11 +30,11 @@ void converterEstruturaProduto(const ESTRUTURA_DATASET *registro, ESTRUTURA_PROD
 /**
  * @brief               Cria e grava o arquivo de produtos a partir do buffer em memória.
  * 
- * Se não puder criar o arquivo ou registro do produto, retorna uma mensagem de erro {0, ""}.
+ * Se não puder criar o arquivo ou registro do produto, retorna uma mensagem de erro {0, "..."}.
  * 
  * @param buffer        Ponteiro para o array de compras (dados lidos do dataset).
  * 
- * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
 RESULTADO preencherArquivoProduto(const ESTRUTURA_DATASET *buffer);
 
@@ -53,7 +53,7 @@ void escreverCompra(FILE *arquivoCompra, const ESTRUTURA_COMPRA *compra);
  * 
  * @param registro    Ponteiro para o local de um registro do buffer.
  * @param compra      Ponteiro para o local que será convertido o registro do buffer.
- * @param numeracao   Numero sequencial no arquivo de produtos.
+ * @param numeracao   Numero sequencial no arquivo de compras.
  * 
  * @return void       Retorna nada.
  */
@@ -62,11 +62,11 @@ void converterEstruturaCompra(const ESTRUTURA_DATASET *registro, ESTRUTURA_COMPR
 /**
  * @brief               Cria e grava o arquivo de vendas a partir do buffer em memória.
  * 
- * Se não puder criar o arquivo ou registro do produto, retorna uma mensagem de erro {0, ""}.
+ * Se não puder criar o arquivo ou registro do produto, retorna uma mensagem de erro {0, "..."}.
  * 
  * @param buffer        Ponteiro para o array de compras (dados lidos do dataset).
  * 
- * @return RESULTADO    Retorna {1, ""} se sucesso, {0, ""} se falhou.
+ * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
 RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer);
 
@@ -80,5 +80,16 @@ RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer);
  */
 template <typename T, typename IndiceT>
 RESULTADO escreverIndice(const char *nomeArquivoDados, const char *nomeArquivoIndice);
+
+/**
+ * @brief               Cria e grava o arquivo de indice parcial para qualquer estrutura de dados.
+ * 
+ * @param nomeArquivo   Caminho do arquivo de dados (produtos ou compras).
+ * @param registro      Ponteiro para o registro que sera excluido.
+ * 
+ * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
+ */
+template <typename T>
+RESULTADO excluirRegistro(const char *nomeArquivo, T *registro);
 
 #endif

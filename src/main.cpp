@@ -237,7 +237,7 @@ void consultarDadosIndiceSequencial(){
         case 1: {
             ESTRUTURA_COMPRA *bufferCompra = NULL;
 
-            /* Lambdas para extrair os limites de ID do bloco de indice e o ID da compra */
+            /* Lambdas para extrair os limites de numeracao do bloco de indice e a numeracao da compra */
             auto minBlocoId = [](const INDICE_COMPRA *b) -> int { return b->primeiro_numeracao; };
             auto maxBlocoId = [](const INDICE_COMPRA *b) -> int { return b->ultimo_numeracao; };
             auto extrairId  = [](const ESTRUTURA_COMPRA *r) -> int { return r->numeracao; };
@@ -263,7 +263,7 @@ void consultarDadosIndiceSequencial(){
         case 2: {
             ESTRUTURA_PRODUTO *bufferProduto = NULL;
 
-            /* Lambdas para extrair os limites de ID do bloco de indice e o ID do produto */
+            /* Lambdas para extrair os limites de numeracao do bloco de indice e a numeracao do produto */
             auto minBlocoId = [](const INDICE_PRODUTO *b) -> int { return b->primeiro_numeracao; };
             auto maxBlocoId = [](const INDICE_PRODUTO *b) -> int { return b->ultimo_numeracao; };
             auto extrairId  = [](const ESTRUTURA_PRODUTO *r) -> int { return r->numeracao; };
@@ -280,6 +280,140 @@ void consultarDadosIndiceSequencial(){
 
             if(bufferProduto != NULL){
                 mostrarDadosProduto(bufferProduto, 1);
+            }
+
+            free(bufferProduto);
+            break;
+        }
+
+        default:
+            mostrarMensagem({0, "Opcao nao encontrada."});
+            break;
+    }    
+}
+
+void excluirRegistroId(){
+    int opcao = mostrarMenuArquivo();
+
+    mostrarMensagem({2, "Digite o codigo do produto que sera excluido: "});
+    int produto = escolherProduto();
+    
+    switch (opcao){
+        case 1: {
+            ESTRUTURA_COMPRA *bufferCompra = NULL;
+
+            /* Lambdas para extrair os limites de numeracao do bloco de indice e a numeracao da compra */
+            auto minBlocoId = [](const INDICE_COMPRA *b) -> int { return b->primeiro_produto_id; };
+            auto maxBlocoId = [](const INDICE_COMPRA *b) -> int { return b->ultimo_produto_id; };
+            auto extrairId  = [](const ESTRUTURA_COMPRA *r) -> int { return r->product_id; };
+
+            mostrarMensagem(pesquisaIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(
+                ARQUIVO_COMPRA,
+                ARQUIVO_INDICE_COMPRA,
+                produto,
+                minBlocoId,
+                maxBlocoId,
+                extrairId,
+                &bufferCompra
+            ));
+
+            if(bufferCompra != NULL){
+                mostrarDadosCompra(bufferCompra, 1);
+                mostrarMensagem(excluirRegistro(ARQUIVO_COMPRA, bufferCompra));
+            }
+
+            free(bufferCompra);
+            break;
+        }
+
+        case 2: {
+            ESTRUTURA_PRODUTO *bufferProduto = NULL;
+
+            /* Lambdas para extrair os limites de numeracao do bloco de indice e a numeracao do produto */
+            auto minBlocoId = [](const INDICE_PRODUTO *b) -> int { return b->primeiro_produto_id; };
+            auto maxBlocoId = [](const INDICE_PRODUTO *b) -> int { return b->ultimo_produto_id; };
+            auto extrairId  = [](const ESTRUTURA_PRODUTO *r) -> int { return r->product_id; };
+
+            mostrarMensagem(pesquisaIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(
+                ARQUIVO_PRODUTO,
+                ARQUIVO_INDICE_PRODUTO,
+                produto,
+                minBlocoId,
+                maxBlocoId,
+                extrairId,
+                &bufferProduto
+            ));
+
+            if(bufferProduto != NULL){
+                mostrarDadosProduto(bufferProduto, 1);
+                mostrarMensagem(excluirRegistro(ARQUIVO_PRODUTO, bufferProduto));
+            }
+
+            free(bufferProduto);
+            break;
+        }
+
+        default:
+            mostrarMensagem({0, "Opcao nao encontrada."});
+            break;
+    }    
+}
+
+void excluirRegistroSequencial(){
+    int opcao = mostrarMenuArquivo();
+
+    mostrarMensagem({2, "Digite o codigo do produto que sera excluido: "});
+    int numero = escolherProduto();
+    
+    switch (opcao){
+        case 1: {
+            ESTRUTURA_COMPRA *bufferCompra = NULL;
+
+            /* Lambdas para extrair os limites de numeracao do bloco de indice e a numeracao da compra */
+            auto minBlocoId = [](const INDICE_COMPRA *b) -> int { return b->primeiro_numeracao; };
+            auto maxBlocoId = [](const INDICE_COMPRA *b) -> int { return b->ultimo_numeracao; };
+            auto extrairId  = [](const ESTRUTURA_COMPRA *r) -> int { return r->numeracao; };
+
+            mostrarMensagem(pesquisaIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(
+                ARQUIVO_COMPRA,
+                ARQUIVO_INDICE_COMPRA,
+                numero,
+                minBlocoId,
+                maxBlocoId,
+                extrairId,
+                &bufferCompra
+            ));
+
+            if(bufferCompra != NULL){
+                mostrarDadosCompra(bufferCompra, 1);
+                mostrarMensagem(excluirRegistro(ARQUIVO_COMPRA, bufferCompra));
+            }
+
+            free(bufferCompra);
+            break;
+        }
+
+        case 2: {
+            ESTRUTURA_PRODUTO *bufferProduto = NULL;
+
+            /* Lambdas para extrair os limites de numeracao do bloco de indice e a numeracao do produto */
+            auto minBlocoId = [](const INDICE_PRODUTO *b) -> int { return b->primeiro_numeracao; };
+            auto maxBlocoId = [](const INDICE_PRODUTO *b) -> int { return b->ultimo_numeracao; };
+            auto extrairId  = [](const ESTRUTURA_PRODUTO *r) -> int { return r->numeracao; };
+
+            mostrarMensagem(pesquisaIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(
+                ARQUIVO_PRODUTO,
+                ARQUIVO_INDICE_PRODUTO,
+                numero,
+                minBlocoId,
+                maxBlocoId,
+                extrairId,
+                &bufferProduto
+            ));
+
+            if(bufferProduto != NULL){
+                mostrarDadosProduto(bufferProduto, 1);
+                mostrarMensagem(excluirRegistro(ARQUIVO_PRODUTO, bufferProduto));
             }
 
             free(bufferProduto);
@@ -331,12 +465,17 @@ int main(){
             }
 
             case 7:{
-
+                
                 break;
             }
 
             case 8:{
+                excluirRegistroId();
+                break;
+            }
 
+            case 9:{
+                excluirRegistroSequencial();
                 break;
             }
 

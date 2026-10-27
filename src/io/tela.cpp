@@ -36,7 +36,8 @@ int mostrarMenuInicial(){
            AZUL "║" PADRAO " [5] - Consultar dados a partir do indice    "          AZUL "║\n"
            AZUL "║" PADRAO " [6] - Consultar dado por sequencia          "          AZUL "║\n"
            AZUL "║" PADRAO " [7] - Inserir dados                         "          AZUL "║\n"
-           AZUL "║" PADRAO " [8] - Remover dados                         "          AZUL "║\n"
+           AZUL "║" PADRAO " [8] - Remover dados por codigo              "          AZUL "║\n"
+           AZUL "║" PADRAO " [9] - Remover dados por sequencia           "          AZUL "║\n"
            AZUL "║" PADRAO " [0] - Fechar programa                       "          AZUL "║\n\n" PADRAO);
 
     printf(AZUL "Digite sua escolha: " PADRAO);
