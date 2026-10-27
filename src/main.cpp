@@ -380,7 +380,7 @@ void excluirRegistroId(){
 
             if(bufferCompra != NULL){
                 mostrarDadosCompra(bufferCompra, 1);
-                mostrarMensagem(excluirRegistro(ARQUIVO_COMPRA, bufferCompra));
+                mostrarMensagem(excluirRegistro(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, bufferCompra));
             }
 
             free(bufferCompra);
@@ -408,7 +408,7 @@ void excluirRegistroId(){
 
             if(bufferProduto != NULL){
                 mostrarDadosProduto(bufferProduto, 1);
-                mostrarMensagem(excluirRegistro(ARQUIVO_PRODUTO, bufferProduto));
+                mostrarMensagem(excluirRegistro(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, bufferProduto));
             }
 
             free(bufferProduto);
@@ -449,7 +449,7 @@ void excluirRegistroSequencial(){
 
             if(bufferCompra != NULL){
                 mostrarDadosCompra(bufferCompra, 1);
-                mostrarMensagem(excluirRegistro(ARQUIVO_COMPRA, bufferCompra));
+                mostrarMensagem(excluirRegistro(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, bufferCompra));
             }
 
             free(bufferCompra);
@@ -477,7 +477,7 @@ void excluirRegistroSequencial(){
 
             if(bufferProduto != NULL){
                 mostrarDadosProduto(bufferProduto, 1);
-                mostrarMensagem(excluirRegistro(ARQUIVO_PRODUTO, bufferProduto));
+                mostrarMensagem(excluirRegistro(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, bufferProduto));
             }
 
             free(bufferProduto);

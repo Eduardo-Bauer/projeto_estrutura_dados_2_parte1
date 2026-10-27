@@ -90,7 +90,7 @@ RESULTADO escreverIndice(const char *nomeArquivoDados, const char *nomeArquivoIn
  * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
 template <typename T>
-RESULTADO excluirRegistro(const char *nomeArquivo, T *registro);
+RESULTADO excluirRegistro(const char *nomeArquivoDados, const char *nomeArquivoTemp, T *registro);
 
 /**
  * @brief Insere um novo registro no arquivo temporario (data/temp) e atualiza o elo ordenado por product_id.

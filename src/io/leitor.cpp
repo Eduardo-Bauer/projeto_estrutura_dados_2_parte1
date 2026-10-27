@@ -35,74 +35,64 @@ RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida){
     return {1, "Sucesso ao carregar o dadaset na memoria."};
 }
 
-RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida){
+template <typename T>
+RESULTADO lerRegistrosComElos(const char *nomeArquivoDados, const char *nomeArquivoTemp, T **bufferSaida){
     int i = 0;
-    
-    /* malloc na memoria para os dados das compras */
-    ESTRUTURA_COMPRA *buffer = (ESTRUTURA_COMPRA*)calloc(QUANTIDADE_REGISTRO, sizeof(ESTRUTURA_COMPRA));
+
+    T *buffer = (T*)calloc(QUANTIDADE_REGISTRO, sizeof(T));
     if(buffer == NULL){
         return {0, "Erro: Memoria insuficiente para o buffer."};
     }
 
-    /* ponteiro para o arquivo das compras */
-    FILE *arquivo = abrirArquivo(ARQUIVO_COMPRA, "rb");
-    if(arquivo == NULL){
+    FILE *arqDados = abrirArquivo(nomeArquivoDados, "rb");
+    if(arqDados == NULL){
         free(buffer);
-        return {0, "Erro: Falha ao abrir o arquivo de compras."};
+        return {0, "Erro: Falha ao abrir o arquivo de dados."};
     }
 
-    while(i < QUANTIDADE_REGISTRO){
-        if(fread(&buffer[i], sizeof(ESTRUTURA_COMPRA), 1, arquivo) == 0){
-            break;
+    /* Abre o arquivo temporario (se existir) para seguir os elos */
+    FILE *arqTemp = abrirArquivo(nomeArquivoTemp, "rb");
+
+    T itemPrincipal;
+    T itemTemp;
+
+    while(i < QUANTIDADE_REGISTRO && fread(&itemPrincipal, sizeof(T), 1, arqDados) == 1){
+        /* 1. Se o registro do arquivo principal nao estiver excluido, adiciona ao buffer */
+        if(itemPrincipal.excluido == 0){
+            buffer[i++] = itemPrincipal;
         }
 
-        if(buffer[i].excluido == 1){
-            i--;
+        /* 2. Se este registro possuir elos no arquivo temporario, percorre a cadeia em ordem */
+        int eloAtual = itemPrincipal.elo;
+        while(eloAtual != -1 && i < QUANTIDADE_REGISTRO && arqTemp != NULL){
+            fseek(arqTemp, sizeof(T) * eloAtual, SEEK_SET);
+            if(fread(&itemTemp, sizeof(T), 1, arqTemp) != 1){
+                break;
+            }
+
+            if(itemTemp.excluido == 0){
+                buffer[i++] = itemTemp;
+            }
+
+            eloAtual = itemTemp.elo;
         }
-        
-        i++;
     }
 
-    fclose(arquivo);
+    if(arqTemp != NULL){
+        fclose(arqTemp);
+    }
+    fclose(arqDados);
 
     *bufferSaida = buffer;
+    return {1, "Sucesso ao carregar os registros na memoria."};
+}
 
-    return {1, "Sucesso ao carregar as compras na memoria."};    
+RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida){
+    return lerRegistrosComElos<ESTRUTURA_COMPRA>(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, bufferSaida);
 }
 
 RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida){
-    int i = 0;
-    
-    /* malloc na memoria para os dados dos produtos */
-    ESTRUTURA_PRODUTO *buffer = (ESTRUTURA_PRODUTO*)calloc(QUANTIDADE_REGISTRO, sizeof(ESTRUTURA_PRODUTO));
-    if(buffer == NULL){
-        return {0, "Erro: Memoria insuficiente para o buffer."};
-    }
-
-    /* ponteiro para o arquivo dos produtos */
-    FILE *arquivo = abrirArquivo(ARQUIVO_PRODUTO, "rb");
-    if(arquivo == NULL){
-        free(buffer);
-        return {0, "Erro: Falha ao abrir o arquivo de produtos."};
-    }
-
-    while(i < QUANTIDADE_REGISTRO){
-        if(fread(&buffer[i], sizeof(ESTRUTURA_PRODUTO), 1, arquivo) == 0){
-            break;
-        }
-
-        if(buffer[i].excluido == 1){
-            i--;
-        }
-        
-        i++;
-    }
-
-    fclose(arquivo);
-
-    *bufferSaida = buffer;
-
-    return {1, "Sucesso ao carregar os produtos na memoria."};    
+    return lerRegistrosComElos<ESTRUTURA_PRODUTO>(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, bufferSaida);
 }
 
 template <typename T>
