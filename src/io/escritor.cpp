@@ -167,16 +167,12 @@ RESULTADO escreverIndice(const char *nomeArquivoDados, const char *nomeArquivoIn
     return {1, "Sucesso ao criar arquivo de indice."};
 }
 
-/* Instanciacao explicita para permitir a chamada direto no main.cpp */
+/* Instanciacao explicita de escrever indice para permitir a chamada direto no main.cpp */
 template RESULTADO escreverIndice<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(const char*, const char*);
 template RESULTADO escreverIndice<ESTRUTURA_COMPRA, INDICE_COMPRA>(const char*, const char*);
 
 template <typename T>
 RESULTADO excluirRegistro(const char *nomeArquivoDados, const char *nomeArquivoTemp, T *registro){
-    if(registro == NULL){
-        return {0, "Erro: Registro nulo."};
-    }
-
     FILE *arqDados = abrirArquivo(nomeArquivoDados, "rb+");
     if(arqDados == NULL){
         return {0, "Erro: Falha ao abrir o arquivo principal."};
@@ -197,10 +193,6 @@ RESULTADO excluirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
     fclose(arqDados);
 
     /* Caso 2: O registro foi recem-adicionado e esta no arquivo temporario */
-    if(nomeArquivoTemp == NULL){
-        return {0, "Erro: Arquivo temporario nao informado."};
-    }
-
     FILE *arqTemp = abrirArquivo(nomeArquivoTemp, "rb+");
     if(arqTemp == NULL){
         return {0, "Erro: Falha ao abrir o arquivo temporario."};
@@ -216,7 +208,7 @@ RESULTADO excluirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
     return {1, "Registro excluido do arquivo temporario com sucesso."};
 }
 
-/* Instanciacao explicita atualizada */
+/* Instanciacao explicita da exclusao de registros */
 template RESULTADO excluirRegistro<ESTRUTURA_PRODUTO>(const char*, const char*, ESTRUTURA_PRODUTO*);
 template RESULTADO excluirRegistro<ESTRUTURA_COMPRA>(const char*, const char*, ESTRUTURA_COMPRA*);
 
@@ -258,7 +250,7 @@ RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
 
     /* CASO ESPECIAL: O novo produto e MENOR que o primeiro registro (posicao 0).
        O novoRegistro assume a posicao 0 no arquivo principal e o antigo registro 0
-       vai para o arquivo temporario, mantendo a ordem sequencial perfeita! */
+       vai para o arquivo temporario */
     if(novoRegistro.product_id < primeiroItem.product_id){
         /* Antigo primeiro item vai para o arquivo temporario mantendo o elo que ele ja tinha */
         primeiroItem.numeracao = totalDados + novaPosicaoTemp;
@@ -292,6 +284,7 @@ RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
         if(itemAux.product_id <= novoRegistro.product_id){
             posAntecessor = meio;
             min = meio + 1;
+
         } else {
             max = meio - 1;
         }
@@ -303,8 +296,10 @@ RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
 
     if(itemPrincipal.elo == -1){
         itemPrincipal.elo = novaPosicaoTemp;
+
         fseek(arqDados, sizeof(T) * posAntecessor, SEEK_SET);
         fwrite(&itemPrincipal, sizeof(T), 1, arqDados);
+
     } else {
         int eloAtual = itemPrincipal.elo;
         int eloAnterior = -1;
@@ -328,12 +323,16 @@ RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
 
         if(eloAnterior == -1){
             itemPrincipal.elo = novaPosicaoTemp;
+
             fseek(arqDados, sizeof(T) * posAntecessor, SEEK_SET);
             fwrite(&itemPrincipal, sizeof(T), 1, arqDados);
+
         } else {
             fseek(arqTemp, sizeof(T) * eloAnterior, SEEK_SET);
             fread(&itemTempAtual, sizeof(T), 1, arqTemp);
+
             itemTempAtual.elo = novaPosicaoTemp;
+
             fseek(arqTemp, sizeof(T) * eloAnterior, SEEK_SET);
             fwrite(&itemTempAtual, sizeof(T), 1, arqTemp);
         }
@@ -348,15 +347,12 @@ RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
     return {1, "Registro inserido no arquivo temporario e vinculado por elo com sucesso."};
 }
 
+/* Instanciacao explicita da funcao de inserir registros */
 template RESULTADO inserirRegistro<ESTRUTURA_PRODUTO>(const char*, const char*, ESTRUTURA_PRODUTO);
 template RESULTADO inserirRegistro<ESTRUTURA_COMPRA>(const char*, const char*, ESTRUTURA_COMPRA);
 
 template <typename T, typename IndiceT>
-RESULTADO reorganizarArquivo(
-    const char *nomeArquivoDados,
-    const char *nomeArquivoTemp,
-    const char *nomeArquivoIndice
-){
+RESULTADO reorganizarArquivo(const char *nomeArquivoDados, const char *nomeArquivoTemp,const char *nomeArquivoIndice){
     FILE *arqDados = abrirArquivo(nomeArquivoDados, "rb");
     if(arqDados == NULL){
         return {0, "Erro: Nao foi possivel abrir o arquivo principal para reorganizacao."};

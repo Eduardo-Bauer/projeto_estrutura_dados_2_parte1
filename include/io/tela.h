@@ -28,9 +28,9 @@ int mostrarMenuInicial();
 int mostrarMenuArquivo();
 
 /**
- * @brief           Mostra a mensagem retornada pelas funções na tela.
+ * @brief           Mostra a mensagem retornada pelas funcoes na tela.
  * 
- * @param mensagem  Mensagem recebida pelas funções {numero, "texto"}.
+ * @param mensagem  Mensagem recebida pelas funcoes {numero, "texto"}.
  * 
  * @return void     Retorna nada.
  */

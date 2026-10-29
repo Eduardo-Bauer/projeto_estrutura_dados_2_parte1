@@ -9,7 +9,7 @@
 /**
  * @brief               Preenche um buffer com os dados do dataset.
  * 
- * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, "..."}.
  * 
  * @param bufferSaida   Ponteiro para um ponteiro para armazenar os registros do dataset.
  * 
@@ -18,9 +18,7 @@
 RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida);
 
 /**
- * @brief               Preenche um buffer com a quantidade definida de registros das compras.
- * 
- * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * @brief               Realiza a função lerRegistrosComElos com parametros para compras.
  * 
  * @param bufferSaida   Ponteiro para um ponteiro para armazenar os registros de compras.
  * 
@@ -29,9 +27,7 @@ RESULTADO lerDataset(ESTRUTURA_DATASET **bufferSaida);
 RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida);
 
 /**
- * @brief               Preenche um buffer com a quantidade definida de registros dos produtos.
- * 
- * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, ""}.
+ * @brief               Realiza a função lerRegistrosComElos com parametros para produtos.
  * 
  * @param bufferSaida   Ponteiro para um ponteiro para armazenar os registros de produtos.
  * 
@@ -40,14 +36,17 @@ RESULTADO lerCompra(ESTRUTURA_COMPRA **bufferSaida);
 RESULTADO lerProduto(ESTRUTURA_PRODUTO **bufferSaida);
 
 /**
- * @brief               Realiza a pesquisa binaria generica dentro de um arquivo de dados.
+ * @brief                   Realiza a pesquisa binaria generica dentro de um arquivo de dados.
  * 
- * @param nomeArquivo   Caminho do arquivo binario.
- * @param valor         Valor (ID ou sequencial) que sera pesquisado.
- * @param desInicial    Indice inicial da busca no arquivo.
- * @param desFinal      Indice final da busca no arquivo (-1 para calcular o fim automaticamente).
- * @param obterChave    Lambda ou funcao que extrai o campo a ser comparado do registro.
- * @param saida         Ponteiro para ponteiro onde sera armazenado o registro encontrado.
+ * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, "..."}.
+ * 
+ * @param nomeArquivo       Ponteiro para arquivo de dados (produtos ou compras).
+ * @param nomeArquivoTemp   Ponteiro para arquivo temporario de registros inseridos recentemente (produtos ou compras).
+ * @param valor             Valor (ID ou sequencial) que sera pesquisado.
+ * @param desInicial        Indice inicial da busca no arquivo.
+ * @param desFinal          Indice final da busca no arquivo (-1 para calcular na funcao).
+ * @param obterChave        Lambda ou funcao que extrai o campo a ser comparado do registro.
+ * @param saida             Ponteiro para ponteiro onde sera armazenado o registro encontrado.
  * 
  * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
@@ -65,8 +64,11 @@ RESULTADO pesquisaBinaria(
 /**
  * @brief                   Realiza a pesquisa pelo arquivo de indice parcial (por ID ou sequencial).
  * 
+ * Se não puder criar o buffer, abrir o arquivo e não ler nenhum registro, retorna uma mensagem de erro {0, "..."}.
+ * 
  * @param nomeArquivoDados  Caminho do arquivo de dados (produtos ou compras).
  * @param nomeArquivoIndice Caminho do arquivo de indice.
+ * @param nomeArquivoTemp   Caminho do arquivo de indice.
  * @param valor             Valor (ID ou sequencial) que sera pesquisado.
  * @param obterMinBloco     Lambda que retorna o limite inicial do bloco de indice.
  * @param obterMaxBloco     Lambda que retorna o limite final do bloco de indice.

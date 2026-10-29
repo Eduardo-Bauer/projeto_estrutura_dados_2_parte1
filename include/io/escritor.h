@@ -7,7 +7,7 @@
 #include "models/status.h"
 
 /**
- * @brief                  Escreve os produtos encontrados dentro do arquivo.
+ * @brief                  Escreve os produtos no arquivo de produtos.
  * 
  * @param arquivoProduto   Ponteiro para o arquivo que será salvo os produtos
  * @param produto          Ponteiro para o registro do produto que será escrita no arquivo.
@@ -39,7 +39,7 @@ void converterEstruturaProduto(const ESTRUTURA_DATASET *registro, ESTRUTURA_PROD
 RESULTADO preencherArquivoProduto(const ESTRUTURA_DATASET *buffer);
 
 /**
- * @brief                  Escreve as compras realizadas dentro do arquivo.
+ * @brief                  Escreve as compras realizadas dentro do arquivo de compras.
  * 
  * @param arquivoCompra    Ponteiro para o arquivo que será salvo as compras
  * @param compra           Ponteiro para o registro da compra que será escrita no arquivo.
@@ -73,8 +73,10 @@ RESULTADO preencherArquivoCompra(const ESTRUTURA_DATASET *buffer);
 /**
  * @brief                   Cria e grava o arquivo de indice parcial para qualquer estrutura de dados.
  * 
- * @param nomeArquivoDados  Caminho do arquivo de dados (produtos ou compras).
- * @param nomeArquivoIndice Caminho do arquivo de indice que sera gerado.
+ * Se não puder abrir os arquivos ou não tiver nenhum registro no arqyuvi de dados, retorna uma mensagem de erro {0, "..."}.
+ * 
+ * @param nomeArquivoDados  Ponteiro para arquivo de dados (produtos ou compras).
+ * @param nomeArquivoIndice Ponteiro para arquivo de indice que sera gerado.
  * 
  * @return RESULTADO        Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
@@ -84,8 +86,11 @@ RESULTADO escreverIndice(const char *nomeArquivoDados, const char *nomeArquivoIn
 /**
  * @brief               Cria e grava o arquivo de indice parcial para qualquer estrutura de dados.
  * 
- * @param nomeArquivo   Caminho do arquivo de dados (produtos ou compras).
- * @param registro      Ponteiro para o registro que sera excluido.
+ * Se não puder abrir os arquivos, retorna uma mensagem de erro {0, "..."}.
+ * 
+ * @param nomeArquivoDados  Ponteiro para arquivo de dados (produtos ou compras).
+ * @param nomeArquivoTemp   Ponteiro para arquivo temporario de registros inseridos recentemente (produtos ou compras).
+ * @param registro          Ponteiro para o registro que sera excluido.
  * 
  * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
@@ -94,14 +99,28 @@ RESULTADO excluirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
 
 /**
  * @brief Insere um novo registro no arquivo temporario (data/temp) e atualiza o elo ordenado por product_id.
+ *  
+ * Se não puder abrir os arquivos, retorna uma mensagem de erro {0, "..."}.
+ * 
+ * @param nomeArquivoDados  Ponteiro para arquivo de dados (produtos ou compras).
+ * @param nomeArquivoTemp   Ponteiro para arquivo temporario de registros inseridos recentemente (produtos ou compras).
+ * @param novoRegistro      Registro que sera inserido.
+ *  
+ * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
 template <typename T>
 RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoTemp, T novoRegistro);
 
 /**
- * @brief Reorganiza o arquivo principal mesclando os elos do arquivo temporario,
- *        removendo fisicamente os registros excluidos, reajustando a numeracao
- *        e recriando o arquivo de indice.
+ * @brief Reorganiza o arquivo principal, removendo fisicamente os registros excluidos, reajustando a numeracao e recriando o arquivo de indice.
+ *
+ * Se não puder abrir os arquivos, retorna uma mensagem de erro {0, "..."}.
+ * 
+ * @param nomeArquivoDados      Ponteiro para arquivo de dados (produtos ou compras).
+ * @param nomeArquivoTemp       Ponteiro para arquivo temporario de registros inseridos recentemente (produtos ou compras).
+ * @param nomeArquivoIndice     Ponteiro para arquivo de indice (produtos ou compras).
+ * 
+ * @return RESULTADO    Retorna {1, "..."} se sucesso, {0, "..."} se falhou.
  */
 template <typename T, typename IndiceT>
 RESULTADO reorganizarArquivo(const char *nomeArquivoDados, const char *nomeArquivoTemp, const char *nomeArquivoIndice);

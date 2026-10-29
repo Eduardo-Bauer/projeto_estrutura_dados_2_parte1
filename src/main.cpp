@@ -37,10 +37,14 @@ void inserirDadosIniciais(){
 
     /* Limpa os arquivos temporarios ao recriar a base inicial */
     FILE *tempProd = abrirArquivo(ARQUIVO_TEMP_PRODUTO, "wb");
-    if(tempProd != NULL) fclose(tempProd);
+    if(tempProd != NULL){
+        fclose(tempProd); 
+    } 
 
     FILE *tempComp = abrirArquivo(ARQUIVO_TEMP_COMPRA, "wb");
-    if(tempComp != NULL) fclose(tempComp);
+    if(tempComp != NULL){
+        fclose(tempComp);
+    }
 }
 
 void mostrarDados(){
@@ -310,39 +314,35 @@ int opcao = mostrarMenuArquivo();
         case 1: {
             ESTRUTURA_COMPRA novaCompra = {};
 
-            printf("Digite o ID do produto (product_id): ");
+            mostrarMensagem({2, "Digite o ID do produto (product_id): "});
             scanf("%d", &novaCompra.product_id);
 
-            printf("Digite o preco: ");
+            mostrarMensagem({2, "Digite o preco: "});
             scanf("%f", &novaCompra.price);
 
-            printf("Digite a marca (brand): ");
+            mostrarMensagem({2, "Digite a marca (brand): "});
             scanf("%19s", novaCompra.brand);
 
-            printf("Digite a categoria (category_code): ");
+            mostrarMensagem({2, "Digite a categoria (category_code): "});
             scanf("%49s", novaCompra.category_code);
 
-            mostrarMensagem(inserirRegistro<ESTRUTURA_COMPRA>(
-                ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, novaCompra
-            ));
+            mostrarMensagem(inserirRegistro<ESTRUTURA_COMPRA>(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, novaCompra));
             break;
         }
 
         case 2: {
             ESTRUTURA_PRODUTO novoProduto = {};
 
-            printf("Digite o ID do produto (product_id): ");
+            mostrarMensagem({2, "Digite o ID do produto (product_id): "});
             scanf("%d", &novoProduto.product_id);
 
-            printf("Digite a marca (brand): ");
+            mostrarMensagem({2, "Digite a marca (brand): "});
             scanf("%19s", novoProduto.brand);
 
-            printf("Digite a categoria (category_code): ");
+            mostrarMensagem({2, "Digite a categoria (category_code): "});
             scanf("%49s", novoProduto.category_code);
 
-            mostrarMensagem(inserirRegistro<ESTRUTURA_PRODUTO>(
-                ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, novoProduto
-            ));
+            mostrarMensagem(inserirRegistro<ESTRUTURA_PRODUTO>(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, novoProduto));
             break;
         }
 

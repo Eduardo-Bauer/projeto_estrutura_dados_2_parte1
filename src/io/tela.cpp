@@ -12,8 +12,8 @@ int mostrarMenuArquivo(){
     printf(AZUL "╚═════════════════════════════════════════════╝\n" PADRAO);
 
     printf(AZUL "║" NEGRITO " Escolha uma das opções abaixo:              " PADRAO  AZUL "║\n");
-    printf(AZUL "║" PADRAO " [1] - Arquivo das compras                    "          AZUL "║\n"
-           AZUL "║" PADRAO " [2] - Arquivo dos produtos                   "          AZUL "║\n" PADRAO);
+    printf(AZUL "║" PADRAO " [1] - Arquivo das compras                   "          AZUL "║\n"
+           AZUL "║" PADRAO " [2] - Arquivo dos produtos                  "          AZUL "║\n" PADRAO);
 
     printf(AZUL "Digite sua escolha: " PADRAO);
     scanf("%d", &opcao);
@@ -32,9 +32,9 @@ int mostrarMenuInicial(){
     printf(AZUL "║" PADRAO " [1] - Inserir os dados iniciais             "          AZUL "║\n"
            AZUL "║" PADRAO " [2] - Mostrar os dados parcial              "          AZUL "║\n"
            AZUL "║" PADRAO " [3] - Consultar dado por pesquisa binaria   "          AZUL "║\n"
-           AZUL "║" PADRAO " [4] - Consultar dado por sequencia          "          AZUL "║\n"
+           AZUL "║" PADRAO " [4] - Consultar dado por sequencia binaria  "          AZUL "║\n"
            AZUL "║" PADRAO " [5] - Consultar dados a partir do indice    "          AZUL "║\n"
-           AZUL "║" PADRAO " [6] - Consultar dado por sequencia          "          AZUL "║\n"
+           AZUL "║" PADRAO " [6] - Consultar dado por sequencia indice   "          AZUL "║\n"
            AZUL "║" PADRAO " [7] - Inserir dados                         "          AZUL "║\n"
            AZUL "║" PADRAO " [8] - Remover dados por codigo              "          AZUL "║\n"
            AZUL "║" PADRAO " [9] - Remover dados por sequencia           "          AZUL "║\n"
