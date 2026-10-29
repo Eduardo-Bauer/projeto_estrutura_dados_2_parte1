@@ -12,8 +12,8 @@ int mostrarMenuArquivo(){
     printf(AZUL "╚═════════════════════════════════════════════╝\n" PADRAO);
 
     printf(AZUL "║" NEGRITO " Escolha uma das opções abaixo:              " PADRAO  AZUL "║\n");
-    printf(AZUL "║" PADRAO " [1] - Mostrar arquivo as compras            "          AZUL "║\n"
-           AZUL "║" PADRAO " [2] - Mostrar arquivo dos produtos          "          AZUL "║\n" PADRAO);
+    printf(AZUL "║" PADRAO " [1] - Arquivo das compras                    "          AZUL "║\n"
+           AZUL "║" PADRAO " [2] - Arquivo dos produtos                   "          AZUL "║\n" PADRAO);
 
     printf(AZUL "Digite sua escolha: " PADRAO);
     scanf("%d", &opcao);

@@ -22,6 +22,9 @@
 /* Nome do arquivo das compras recem adicionados. */
 #define ARQUIVO_TEMP_COMPRA  "src/data/temp/compras_temp.bin"
 
+/* Nome do arquivo auxiliar para organizar os arquivos ao finalizar programa. */
+#define ARQUIVO_REORGANIZACAO "src/data/temp/reorg_aux.bin"
+
 /* Tamanho para a criacao do buffer. */
 #define TAMANHO_BUFFER 65000000UL
 

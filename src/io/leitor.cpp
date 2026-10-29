@@ -105,13 +105,13 @@ RESULTADO pesquisaBinaria(
     int (*obterChave)(const T*),
     T **saida
 ){
-    *saida = NULL;
+
     int diferenca;
     int deslocamentoMinimo = desInicial;
     int deslocamentoMaximo = desFinal;
     int deslocamento = -1;
     
-    /* CORRECAO 1: Inicializa com desInicial (0) para achar elos de IDs menores que o primeiro registro */
+    /* Inicializa com desInicial (0) para achar elos de IDs menores que o primeiro registro */
     int posAntecessor = desInicial;
     
     T *registro = (T*)malloc(sizeof(T));
@@ -165,14 +165,15 @@ RESULTADO pesquisaBinaria(
             return {1, "Registro encontrado no arquivo principal."};
         }
 
-        /* CORRECAO 2: Se estava excluido ou repetido, avanca para achar a ultima ocorrencia onde fica o elo */
+        /* Se estava excluido ou repetido, avanca para achar a ultima ocorrencia onde fica o elo */
         posAntecessor = deslocamento;
         deslocamentoMinimo = deslocamento + 1;
     }
 
     /* Verifica a cadeia de elos no arquivo temporario */
-    if(nomeArquivoTemp != NULL && posAntecessor >= 0){
+    if(nomeArquivoTemp != NULL){
         fseek(arquivo, sizeof(T) * posAntecessor, SEEK_SET);
+
         if(fread(registro, sizeof(T), 1, arquivo) == 1 && registro->elo != -1){
             FILE *arqTemp = fopen(nomeArquivoTemp, "rb");
             if(arqTemp != NULL){
@@ -195,6 +196,7 @@ RESULTADO pesquisaBinaria(
 
                     eloAtual = registro->elo;
                 }
+
                 fclose(arqTemp);
             }
         }
@@ -241,14 +243,14 @@ RESULTADO pesquisaIndice(
     int (*obterChaveDados)(const T*),
     T **saida
 ){
-    *saida = NULL;
+
     int diferencaMenor;
     int diferencaMaior;
     int deslocamentoMinimo = 0;
     int deslocamentoMaximo = 0;
     int deslocamento = -1;
     
-    /* CORRECAO 3: Inicializa com 0 para que IDs menores que o 1o bloco verifiquem o bloco 0 */
+    /* Inicializa com 0 para que IDs menores que o 1o bloco verifiquem o bloco 0 */
     int blocoCandidato = 0;
 
     IndiceT bloco;
@@ -302,7 +304,7 @@ RESULTADO pesquisaIndice(
 
     /* Se o valor caiu fora dos blocos (menor que o 1o, entre dois blocos ou maior que o ultimo),
        busca no blocoCandidato onde o elo foi pendurado */
-    if(nomeArquivoTemp != NULL && blocoCandidato >= 0){
+    if(nomeArquivoTemp != NULL){
         fseek(arquivoIndice, sizeof(IndiceT) * blocoCandidato, SEEK_SET);
         fread(&bloco, sizeof(IndiceT), 1, arquivoIndice);
         fclose(arquivoIndice);
@@ -322,7 +324,7 @@ RESULTADO pesquisaIndice(
     return {0, "Registro nao encontrado."};
 }
 
-/* Instanciacao explicita atualizada no final do leitor_3.cpp */
+/* Instanciacao explicita das funcoes de pesquisa */
 template RESULTADO pesquisaBinaria<ESTRUTURA_PRODUTO>(
     const char*, const char*, int, int, int, int (*)(const ESTRUTURA_PRODUTO*), ESTRUTURA_PRODUTO**
 );

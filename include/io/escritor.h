@@ -98,4 +98,12 @@ RESULTADO excluirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
 template <typename T>
 RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoTemp, T novoRegistro);
 
+/**
+ * @brief Reorganiza o arquivo principal mesclando os elos do arquivo temporario,
+ *        removendo fisicamente os registros excluidos, reajustando a numeracao
+ *        e recriando o arquivo de indice.
+ */
+template <typename T, typename IndiceT>
+RESULTADO reorganizarArquivo(const char *nomeArquivoDados, const char *nomeArquivoTemp, const char *nomeArquivoIndice);
+
 #endif

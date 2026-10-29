@@ -350,3 +350,93 @@ RESULTADO inserirRegistro(const char *nomeArquivoDados, const char *nomeArquivoT
 
 template RESULTADO inserirRegistro<ESTRUTURA_PRODUTO>(const char*, const char*, ESTRUTURA_PRODUTO);
 template RESULTADO inserirRegistro<ESTRUTURA_COMPRA>(const char*, const char*, ESTRUTURA_COMPRA);
+
+template <typename T, typename IndiceT>
+RESULTADO reorganizarArquivo(
+    const char *nomeArquivoDados,
+    const char *nomeArquivoTemp,
+    const char *nomeArquivoIndice
+){
+    FILE *arqDados = abrirArquivo(nomeArquivoDados, "rb");
+    if(arqDados == NULL){
+        return {0, "Erro: Nao foi possivel abrir o arquivo principal para reorganizacao."};
+    }
+
+    /* Arquivo temporario de extensao */
+    FILE *arqTemp = abrirArquivo(nomeArquivoTemp, "rb");
+    if(arqTemp == NULL){
+        fclose(arqDados);
+        return {0, "Erro: Falha ao abrir oarquivo temporario."};
+    }
+
+    /* Arquivo auxiliar onde sera montada a nova base limpa e reordenada */
+    FILE *arqNovo = abrirArquivo(ARQUIVO_REORGANIZACAO, "wb");
+    if(arqNovo == NULL){
+        fclose(arqTemp);
+        fclose(arqDados);
+        return {0, "Erro: Falha ao criar arquivo auxiliar de reorganizacao."};
+    }
+
+    T itemPrincipal;
+    T itemTemp;
+    int novaNumeracao = 0;
+
+    /* Percorre todo o arquivo principal */
+    while(fread(&itemPrincipal, sizeof(T), 1, arqDados) == 1){
+        int eloAtual = itemPrincipal.elo;
+
+        /* 1. Se o registro do arquivo principal NAO estiver excluido, grava com numeracao atualizada */
+        if(itemPrincipal.excluido == 0){
+            itemPrincipal.numeracao = novaNumeracao++;
+            itemPrincipal.elo = -1;
+            fwrite(&itemPrincipal, sizeof(T), 1, arqNovo);
+        }
+
+        /* 2. Percorre a cadeia de elos deste registro no arquivo temporario (mesmo que o principal estivesse excluido, seus elos podem conter registros ativos!) */
+        while(eloAtual != -1 && arqTemp != NULL){
+            fseek(arqTemp, sizeof(T) * eloAtual, SEEK_SET);
+            if(fread(&itemTemp, sizeof(T), 1, arqTemp) != 1){
+                break;
+            }
+
+            int proximoElo = itemTemp.elo;
+
+            if(itemTemp.excluido == 0){
+                itemTemp.numeracao = novaNumeracao++;
+                itemTemp.elo = -1;
+                fwrite(&itemTemp, sizeof(T), 1, arqNovo);
+            }
+
+            eloAtual = proximoElo;
+        }
+    }
+
+    fclose(arqNovo);
+    fclose(arqTemp);
+    fclose(arqDados);
+
+    /* 3. Substitui o arquivo principal antigo pelo novo arquivo reorganizado */
+    remove(nomeArquivoDados);
+    rename(ARQUIVO_REORGANIZACAO, nomeArquivoDados);
+
+    /* 4. Limpa (zera) o arquivo temporario de elos, pois todos ja foram incorporados */
+    FILE *limparTemp = abrirArquivo(nomeArquivoTemp, "wb");
+    if(limparTemp != NULL){
+        fclose(limparTemp);
+    }
+
+    /* 5. Recria o arquivo de indice parcial com as novas numeracoes e IDs atualizados */
+    if(novaNumeracao > 0){
+        escreverIndice<T, IndiceT>(nomeArquivoDados, nomeArquivoIndice);
+    } else {
+        /* Se todos os registros foram excluidos, zera tambem o arquivo de indice */
+        FILE *limparIndice = abrirArquivo(nomeArquivoIndice, "wb");
+        if(limparIndice != NULL) fclose(limparIndice);
+    }
+
+    return {1, "Arquivo reorganizado, excluidos removidos e numeracao corrigida com sucesso."};
+}
+
+/* Instanciacao explicita da funcao de reorganizar arquivo */
+template RESULTADO reorganizarArquivo<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(const char*, const char*, const char*);
+template RESULTADO reorganizarArquivo<ESTRUTURA_COMPRA, INDICE_COMPRA>(const char*, const char*, const char*);

@@ -490,6 +490,16 @@ void excluirRegistroSequencial(){
     }    
 }
 
+void encerrarSistema(){
+    mostrarMensagem({2, "Reorganizando arquivos e corrigindo numeracoes antes de fechar."});
+
+    mostrarMensagem(reorganizarArquivo<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, ARQUIVO_INDICE_PRODUTO));
+
+    mostrarMensagem(reorganizarArquivo<ESTRUTURA_COMPRA, INDICE_COMPRA>(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, ARQUIVO_INDICE_COMPRA));
+
+    mostrarMensagem({1, "Sistema encerrado com sucesso."});
+}
+
 int main(){
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
@@ -544,6 +554,7 @@ int main(){
             }
 
             case 0:{
+                encerrarSistema();
                 exit(0);
             }
 
