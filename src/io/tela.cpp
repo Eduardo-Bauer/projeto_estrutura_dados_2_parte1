@@ -5,6 +5,7 @@
 #include "models/arquivoProduto.h"
 
 int mostrarMenuArquivo(){
+    /* opcao escolhida pelo usuario */
     int opcao = 0;
 
     printf(AZUL "╔═════════════════════════════════════════════╗\n");
@@ -22,6 +23,7 @@ int mostrarMenuArquivo(){
 }
 
 int mostrarMenuInicial(){
+    /* opcao escolhida pelo usuario */
     int opcao = 0;
 
     printf(AZUL "╔═════════════════════════════════════════════╗\n");
@@ -59,6 +61,7 @@ void mostrarMensagem(RESULTADO mensagem) {
 }
 
 void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro, int const quantidade){
+    /* Percorre ate a quantidade de registros do buffer acabar */
     for(int i = 0; i < quantidade; i++){
         if(registro[i].product_id != 0){
             printf("numeracao: %d | "
@@ -76,6 +79,7 @@ void mostrarDadosCompra(ESTRUTURA_COMPRA const *registro, int const quantidade){
 }
 
 void mostrarDadosProduto(ESTRUTURA_PRODUTO const *registro, int const quantidade){
+    /* Percorre ate a quantidade de registros do buffer acabar */
     for(int i = 0; i < quantidade; i++){
         if(registro[i].product_id != 0){
             printf("numeracao: %d | "
