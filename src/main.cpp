@@ -491,9 +491,11 @@ void excluirRegistroSequencial(){
 }
 
 void encerrarSistema(){
-    mostrarMensagem({2, "Reorganizando arquivos e corrigindo numeracoes antes de fechar."});
+    mostrarMensagem({2, "Reorganizando arquivos dos produtos."});
 
     mostrarMensagem(reorganizarArquivo<ESTRUTURA_PRODUTO, INDICE_PRODUTO>(ARQUIVO_PRODUTO, ARQUIVO_TEMP_PRODUTO, ARQUIVO_INDICE_PRODUTO));
+
+    mostrarMensagem({2, "Reorganizando arquivos das compras."});
 
     mostrarMensagem(reorganizarArquivo<ESTRUTURA_COMPRA, INDICE_COMPRA>(ARQUIVO_COMPRA, ARQUIVO_TEMP_COMPRA, ARQUIVO_INDICE_COMPRA));
 
